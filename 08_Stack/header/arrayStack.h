@@ -2,10 +2,11 @@
 #include "stack.h"
 #include <iostream>
 #include <sstream>
-#include "myexception.h"
+#include "myExceptions.h"
 
 template<class T>
-void changeLength1D(T*& a, int oldLength, int newLength) {
+void changeLength1D(T*& a, int oldLength, int newLength)
+{
     if (newLength < 0) {
         throw illegalParameterValue("new length must be >= 0");
     }
@@ -35,7 +36,8 @@ private:
 };
 
 template<class T>
-arrayStack<T>::arrayStack(int initialCapacity) {
+arrayStack<T>::arrayStack(int initialCapacity)
+{
     if (initialCapacity < 1) {
         std::ostringstream s;
         s << "Initial capacity = " << initialCapacity << " Must be > 0";
@@ -49,7 +51,8 @@ arrayStack<T>::arrayStack(int initialCapacity) {
 }
 
 template<class T>
-T& arrayStack<T>::top() {
+T& arrayStack<T>::top()
+{
     if (stackTop == -1) {
         throw stackEmpty();
     }
@@ -57,7 +60,8 @@ T& arrayStack<T>::top() {
 }
 
 template<class T>
-void arrayStack<T>::pop() {
+void arrayStack<T>::pop()
+{
     if (stackTop == -1) {
         throw stackEmpty();
     }
@@ -65,7 +69,8 @@ void arrayStack<T>::pop() {
 }
 
 template<class T>
-void arrayStack<T>::push(const T& theElement) {
+void arrayStack<T>::push(const T& theElement)
+{
     if (stackTop == arrayLength - 1) {
         // The space is full, double the capacity.
         changeLength1D(stack, arrayLength, 2 * arrayLength);
@@ -75,4 +80,3 @@ void arrayStack<T>::push(const T& theElement) {
     // Push to the top of the stack (the tail of the array)
     stack[++stackTop] = theElement;
 }
-

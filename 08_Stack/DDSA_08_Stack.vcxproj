@@ -146,11 +146,16 @@
     <ClInclude Include="class\myexception.h" />
     <ClInclude Include="class\stack.h" />
     <ClInclude Include="class\linkedStack.h" />
+    <ClInclude Include="header\arrayList.h" />
+    <ClInclude Include="header\arrayStack.h" />
+    <ClInclude Include="header\Chain.h" />
+    <ClInclude Include="header\linearList.h" />
+    <ClInclude Include="header\linkedStack.h" />
+    <ClInclude Include="header\myExceptions.h" />
+    <ClInclude Include="header\stack.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\.mazeConfig.cpp" />
     <ClCompile Include="source\OfflineEquivalenceClassPartitioning.cpp" />
-    <ClCompile Include="source\.ratInAMaze.cpp" />
     <ClCompile Include="source\reSortRailCars.cpp" />
     <ClCompile Include="source\.main.cpp" />
     <ClCompile Include="source\printMatchedPairs.cpp" />

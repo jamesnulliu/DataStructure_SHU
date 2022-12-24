@@ -16,8 +16,7 @@
 #include "myExceptions.h"
 
 template<class T>
-class arrayQueue :
-    public queue<T>
+class arrayQueue : public queue<T>
 {
 public:
     arrayQueue(int initialCapacity = 10);

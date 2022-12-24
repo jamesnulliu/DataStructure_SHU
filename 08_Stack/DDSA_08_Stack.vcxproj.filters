@@ -30,6 +30,27 @@
     <ClInclude Include="class\arrayStack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="header\arrayList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\linearList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\myExceptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\arrayStack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Chain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\linkedStack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\stack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\.main.cpp">
@@ -48,12 +69,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\OfflineEquivalenceClassPartitioning.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\.ratInAMaze.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\.mazeConfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

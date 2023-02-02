@@ -3,9 +3,14 @@
 #include <string>
 #include <iterator>
 #include <algorithm>
-#include "ChangeLength1D.h"
+#include <iostream>
 
 constexpr auto INITIAL_CAPACITY = 10;
+
+class String; // declaration
+
+std::ostream& operator<<(std::ostream& out, const String& str);
+std::istream& operator>>(std::istream& in, String& str);
 
 class String
 {
@@ -49,6 +54,13 @@ public:
 
     String operator+(const String& str) const;
     String operator+=(const String& str);
+
+    std::istream& getline(std::istream& in) {
+        std::string temp;
+        std::getline(in, temp);
+        (*this) = temp;
+        return in;
+    }
 
     class iterator
     {

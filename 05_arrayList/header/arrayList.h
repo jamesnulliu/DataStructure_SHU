@@ -23,6 +23,7 @@ public:
     // constructor, copy constructor and destructor
     arrayList(int initialCapacity = 10);
     arrayList(const arrayList<T>&);
+    arrayList(std::initializer_list<T> initList);
     ~arrayList() { delete[] element; }
 
     // ADT methods
@@ -48,8 +49,7 @@ protected:
 template<class T>
 arrayList<T>::arrayList(int initialCapacity)
 {// Constructor.
-    if (initialCapacity < 1)
-    {
+    if (initialCapacity < 1) {
         ostringstream s;
         s << "Initial capacity = " << initialCapacity << " Must be > 0";
         throw illegalParameterValue(s.str());
@@ -69,10 +69,14 @@ arrayList<T>::arrayList(const arrayList<T>& theList)
 }
 
 template<class T>
+arrayList<T>::arrayList(std::initializer_list<T> initList) {
+    for (auto& e : initList) { insert(listSize, e); }
+}
+
+template<class T>
 void arrayList<T>::checkIndex(int theIndex) const
 {// Verify that theIndex is between 0 and listSize - 1.
-    if (theIndex < 0 || theIndex >= listSize)
-    {
+    if (theIndex < 0 || theIndex >= listSize) {
         ostringstream s;
         s << "index = " << theIndex << " size = " << listSize;
         throw illegalIndex(s.str());
@@ -93,10 +97,10 @@ int arrayList<T>::indexOf(const T& theElement) const
  // Return -1 if theElement not in list.
 
    // search for theElement
-    int theIndex = (int) (find(element, element + listSize, theElement)
-                          - element);
+    int theIndex = (int)(find(element, element + listSize, theElement)
+        - element);
 
-    // check if theElement was found
+// check if theElement was found
     if (theIndex == listSize)
         // not found
         return -1;
@@ -111,7 +115,7 @@ void arrayList<T>::erase(int theIndex)
 
     // valid index, shift elements with higher index
     copy(element + theIndex + 1, element + listSize,
-         element + theIndex);
+        element + theIndex);
 
     element[--listSize].~T(); // invoke destructor
 }
@@ -119,23 +123,21 @@ void arrayList<T>::erase(int theIndex)
 template<class T>
 void arrayList<T>::insert(int theIndex, const T& theElement)
 {// Insert theElement so that its index is theIndex.
-    if (theIndex < 0 || theIndex > listSize)
-    {// invalid index
+    if (theIndex < 0 || theIndex > listSize) {// invalid index
         ostringstream s;
         s << "index = " << theIndex << " size = " << listSize;
         throw illegalIndex(s.str());
     }
 
     // valid index, make sure we have space
-    if (listSize == listCapacity)
-    {// no space, double capacity
+    if (listSize == listCapacity) {// no space, double capacity
         changeLength1D(element, listCapacity, 2 * listCapacity);
         listCapacity *= 2;
     }
 
     // shift elements right one position
     copy_backward(element + theIndex, element + listSize,
-                  element + listSize + 1);
+        element + listSize + 1);
 
     element[theIndex] = theElement;
 
@@ -151,6 +153,8 @@ void arrayList<T>::output(ostream& out) const
 // overload <<
 template <class T>
 ostream& operator<<(ostream& out, const arrayList<T>& x)
-{ x.output(out); return out; }
+{
+    x.output(out); return out;
+}
 
 #endif

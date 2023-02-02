@@ -1,5 +1,19 @@
 #include "String.h"
 
+std::ostream& operator<<(std::ostream& out, const String& str)
+{
+    out << str.c_str();
+    return out;
+}
+
+std::istream& operator>>(std::istream& in, String& str)
+{
+    std::string s;
+    in >> s;
+    str = s;
+    return in;
+}
+
 String::String(int capacity) : _capacity(capacity), _size(0)
 {
     _element = new char[_capacity + 1] {'\0'};
@@ -7,16 +21,16 @@ String::String(int capacity) : _capacity(capacity), _size(0)
 
 String::String(const char* str)
 {
-    _capacity = strlen(str) + 1;
-    _size = strlen(str);
+    _capacity = (int)strlen(str) + 1;
+    _size = (int)strlen(str);
     _element = new char[_capacity] {'\0'};
     strncpy(_element, str, _size);
 }
 
 String::String(const std::string& str)
 {
-    _capacity = str.capacity() + 1;
-    _size = str.size();
+    _capacity = (int)str.capacity() + 1;
+    _size = (int)str.size();
     _element = new char[_capacity] {'\0'};
     strncpy(_element, str.c_str(), _size);
 }

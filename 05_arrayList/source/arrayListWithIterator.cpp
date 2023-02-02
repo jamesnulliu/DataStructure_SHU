@@ -2,6 +2,7 @@
 #include<iostream>
 #include<algorithm>   // has reverse
 #include<numeric>     // has accumulate
+#include <vector>
 #include "../header/linearList.h"
 #include "../header/arrayListWithIterator.h"
 
@@ -48,6 +49,7 @@ int main()
     //int sum = accumulate(y.begin(), y.end(), 0);
     //cout << "The sum of the elements is " << sum << endl;
 
+    vector<int> m;
     // Test 1:
     arrayList<int> x;
     x.push_back(1); x.push_back(2); x.push_back(3);

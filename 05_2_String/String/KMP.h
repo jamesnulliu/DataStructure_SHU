@@ -1,40 +1,85 @@
 #pragma once
+#include <string>
+#include <vector>
 #include "String.h"
 
-int* getNext(const String& p)
+inline void getNext(std::vector<int>& next, const String& pattern)
 {
-    int j = 0;
-    int k = -1;
-    int size = p.length();
-    int* next = new int[size] {-1};
-    while (j < size - 1) {
-        if (k == -1 || p[j] == p[k]) {
-            next[j] = k;
-            j++;
-            k++;
-        } else {
-            k = next[k];
-        }
-    }
-    return next;
-}
-
-int KMP(const String& T, const String& p)
-{
-    int i = 0;
-    int j = 0;
-    int* next = getNext(T);
-    while (i < T.length() && j < p.length()) {
-        if (j == -1 || T[i] == p[j]) {
-            i++;
-            j++;
+    next.clear();
+    next.push_back(-1);
+    for (int i = 0, j = -1; i < (int)pattern.size();) {
+        if (j == -1 || pattern[i] == pattern[j]) {
+            ++i, ++j;
+            if (i != (int)pattern.size() && pattern[j] == pattern[i]) {
+                next.push_back(next[j]);
+            } else {
+                next.push_back(j);
+            }
         } else {
             j = next[j];
         }
     }
-    if (j == p.length()) {
-        return i - j;
+}
+
+inline std::vector<int> KMP(const String& target, const String& pattern)
+{
+    int i = 0;
+    int j = 0;
+    std::vector<int> next;
+    getNext(next, pattern);
+    std::vector<int> result;
+
+    while (i < (int)target.size() && j < (int)pattern.size()) {
+        if (j == -1 || target[i] == pattern[j]) {
+            ++i;
+            ++j;
+            if (j == (int)pattern.size()) {
+                result.push_back(i - j);
+                j = next[j];
+            }
+        } else {
+            j = next[j];
+        }
     }
-    delete[] next;
-    return -1;
+    return result;
+}
+inline void getNext(std::vector<int>& next, const std::string& pattern)
+{
+    next.clear();
+    next.push_back(-1);
+    for (int i = 0, j = -1; i < (int)pattern.size();) {
+        if (j == -1 || pattern[i] == pattern[j]) {
+            ++i, ++j;
+            if (i != (int)pattern.size() && pattern[j] == pattern[i]) {
+                next.push_back(next[j]);
+            } else {
+                next.push_back(j);
+            }
+        } else {
+            j = next[j];
+        }
+    }
+}
+
+inline std::vector<int> KMP(const std::string& target, const std::string& pattern)
+{
+    int i = 0;
+    int j = 0;
+    std::vector<int> next;
+    getNext(next, pattern);
+    std::vector<int> result;
+
+    while (i < (int)target.size() && j < (int)pattern.size()) {
+        if (j == -1 || target[i] == pattern[j]) {
+            ++i;
+            ++j;
+            if (j == (int)pattern.size()) {
+                result.push_back(i - j);
+                j = next[j];
+            }
+        } else {
+            j = next[j];
+        }
+    }
+    return result;
 }

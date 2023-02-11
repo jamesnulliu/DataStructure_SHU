@@ -1,7 +1,12 @@
 #include <iostream>
-#include "../header/ArrayBinaryTree.h"
+#include <stack>
+#include <exception>
+
 int main() {
-	arrayBinaryTree<int> abt;
-
-
+    std::stack<int> s;
+    try {
+        s.top();
+    } catch(std::exception e) {
+        std::cout << e.what();
+    }
 }

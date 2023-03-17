@@ -84,7 +84,7 @@
     <ClInclude Include="07_Graph\Graph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Graph\Graph_AdjacencyMatrix\Graph_AM.h">
+    <ClInclude Include="07_Graph\Graph_AM\Graph_AM.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Graph\Graph_Common\Graph.h">
@@ -179,9 +179,6 @@
     <ClCompile Include="Graph\Graph_Common\Graph.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Graph\test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SkipList_Hash\source\.main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -189,6 +186,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SkipList_Hash\source\UselessStringConvert.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

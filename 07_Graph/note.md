@@ -64,7 +64,7 @@ $\text{Path}(v,w)$ 表示从顶点 $v$ 到顶点 $w$ 的一条单向通路, 它�
     $$
     \text{TD}(v)=\text{ID}(v)+\text{OD}(v)
     $$
-    一般的, 若图 $\text{G}$ 中有 $n$ 个顶点, $e$ 条边(或弧), 则有:
+    一般的, 设图 $\text{G}$ 中有 $n$ 个顶点, $e$ 条边(或弧), 则有:
     $$
     e=\frac{\text{TD}(v_1)+\text{TD}(v_2)+\cdots+\text{TD}(v_n)}{2}
     $$
@@ -119,3 +119,16 @@ $$
 
 ![Graph_01](https://github.com/jamesnulliu/DataStructure_SHU/blob/main/07_Graph/img/Graph_01.png?raw=true)
 
+从上图可以发现, 无向图的邻接矩阵一定是对称矩阵, 顶点 $v_i$ 的度就是第 $i$ 行或第 $j$ 列累加之和, 即:
+$$
+\text{TD}(v_i)=\sum_{j=0}^{n-1}\text{Arcs}[i][j]+\sum_{j=0}^{n-1}\text{Arcs}[j][i]
+$$
+有向图的邻接矩阵不一定对称. 若 $\text{Arcs}[i][j] = 1$ , 则表示有一条从顶点 $v_i$ 到 $v_j$ 的有向边.  
+第 $j$ 列的所有元素值累加之和就是顶点 $v_j$ 的入度:
+$$
+\text{ID}(v_j)=\sum_{i=0}^{n-1}\text{Arcs}[i][j]
+$$
+第 $i$ 行的所有元素值累加之和就是顶点 $v_i$ 的出度:
+$$
+\text{OD}(v_i)=\sum_{j=0}^{n-1}\text{Arcs}[i][j]
+$$

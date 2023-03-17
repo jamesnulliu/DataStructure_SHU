@@ -117,5 +117,5 @@ $$
 $$
 下图给出了无向图和有向图邻接矩阵的示例:
 
-![Graph_01](img\Graph_01.png)
+![Graph_01](https://github.com/jamesnulliu/DataStructure_SHU/blob/main/07_Graph/img/Graph_01.png?raw=true)
 

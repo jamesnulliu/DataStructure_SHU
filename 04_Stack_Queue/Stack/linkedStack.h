@@ -1,7 +1,7 @@
 #pragma once
 
 #include "stack.h"
-#include "../../03_LinearList/LinkedList/chain.h"
+#include "../../03_LinearList/ChainList/chain.h"
 #include "myExceptions.h"
 
 template<class T>

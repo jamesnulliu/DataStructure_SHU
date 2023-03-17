@@ -3,7 +3,7 @@
 #include <iostream>
 #include "PriorityQueue.h"
 #include "myExceptions.h"
-#include "../../ExternalHeader/myexception.h"
+#include "myExceptions.h"
 
 #ifndef DEFAULT_CAPACITY
 #define DEFAULT_CAPACITY 100

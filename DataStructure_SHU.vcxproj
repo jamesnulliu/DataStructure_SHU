@@ -137,6 +137,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="03_LinearList\ArrayList\arrayList.h" />
+    <ClInclude Include="03_LinearList\ArrayList\arrayListWithIterator.h" />
+    <ClInclude Include="03_LinearList\ArrayList\changeLength1D.h" />
+    <ClInclude Include="03_LinearList\ArrayList\linearList.h" />
+    <ClInclude Include="03_LinearList\ArrayList\myExceptions.h" />
+    <ClInclude Include="03_LinearList\ChainList\chain.h" />
+    <ClInclude Include="03_LinearList\ChainList\chainNode.h" />
+    <ClInclude Include="03_LinearList\ChainList\chainWithBinSort.h" />
+    <ClInclude Include="03_LinearList\ChainList\chainWithIterator.h" />
+    <ClInclude Include="03_LinearList\ChainList\circularListWithHeader.h" />
+    <ClInclude Include="03_LinearList\ChainList\dChainWithIt.h" />
+    <ClInclude Include="03_LinearList\ChainList\linearList.h" />
+    <ClInclude Include="03_LinearList\ChainList\myExceptions.h" />
     <ClInclude Include="04_Stack_Queue\Queue\arrayQueue.h" />
     <ClInclude Include="04_Stack_Queue\Queue\myExceptions.h" />
     <ClInclude Include="04_Stack_Queue\Queue\queue.h" />

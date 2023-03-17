@@ -132,6 +132,45 @@
     <ClInclude Include="SkipList_Hash\header\SortedChain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="03_LinearList\ArrayList\arrayList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="03_LinearList\ArrayList\arrayListWithIterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="03_LinearList\ArrayList\changeLength1D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="03_LinearList\ArrayList\linearList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="03_LinearList\ArrayList\myExceptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="03_LinearList\ChainList\chain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="03_LinearList\ChainList\chainNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="03_LinearList\ChainList\chainWithBinSort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="03_LinearList\ChainList\chainWithIterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="03_LinearList\ChainList\circularListWithHeader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="03_LinearList\ChainList\dChainWithIt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="03_LinearList\ChainList\linearList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="03_LinearList\ChainList\myExceptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="05_String_Array_List\String\String.cpp">

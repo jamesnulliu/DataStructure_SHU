@@ -6,11 +6,11 @@ using namespace std;
 using Index = long long;
 using Sizet = long long;
 
-template<class _ElemTy>
-bool topologicalSorting_Kahn(Graph<_ElemTy>& graph, queue<_ElemTy>& result) {
+template<class ElemTy>
+bool topologicalSorting_Kahn(Graph<ElemTy>& graph, queue<ElemTy>& result) {
     result = {};
     queue<Index> zeroIndegreeVertI_que = {};
-    for (Index i = 0; i < graph.vertNum(); ++i) {
+    for (Index i = 0; i < graph._vertNum(); ++i) {
         if (graph.getIndegreeR(i) == 0) { zeroIndegreeVertI_que.push(i); }
     }
     while (!zeroIndegreeVertI_que.empty()) {
@@ -23,17 +23,17 @@ bool topologicalSorting_Kahn(Graph<_ElemTy>& graph, queue<_ElemTy>& result) {
             }
         }
     }
-    if (result.size() == graph.vertNum()) return true;
+    if (result.size() == graph._vertNum()) return true;
     else return false;
 }
 
-template<class _ElemTy>
-bool topologicalSorting_DFS(Graph<_ElemTy>& graph, stack<_ElemTy>& result) {
+template<class ElemTy>
+bool topologicalSorting_DFS(Graph<ElemTy>& graph, stack<ElemTy>& result) {
     result = {};
-    vector<bool> isAddedToResult(graph.vertNum(), false);
-    vector<bool> isUnderRecursion(graph.vertNum(), false);
+    vector<bool> isAddedToResult(graph._vertNum(), false);
+    vector<bool> isUnderRecursion(graph._vertNum(), false);
     try {
-        for (Index i = 0; i < graph.vertNum(); ++i) {
+        for (Index i = 0; i < graph._vertNum(); ++i) {
             if (isAddedToResult[i] == false) {
                 visit_DFS(graph, i, result, isAddedToResult, isUnderRecursion);
             }
@@ -44,8 +44,8 @@ bool topologicalSorting_DFS(Graph<_ElemTy>& graph, stack<_ElemTy>& result) {
     return true;
 }
 
-template<class _ElemTy>
-void visit_DFS(Graph<_ElemTy>& graph, Index vertI, stack<_ElemTy>& result,
+template<class ElemTy>
+void visit_DFS(Graph<ElemTy>& graph, Index vertI, stack<ElemTy>& result,
     vector<bool>& isAddedToResult, vector<bool>& isUnderRecursion) {
     if (isAddedToResult[vertI] == true) return;
     if (isUnderRecursion[vertI] == true) throw 1;

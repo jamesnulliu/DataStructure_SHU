@@ -15,7 +15,7 @@ int main() {
     graph.insertArc('d', 'b');
     graph.insertArc('d', 'a');
     graph.print_adjacencyMatrix();
-    std::cout << std::endl;
     graph.eraseVertex('d');
     graph.print_adjacencyMatrix();
+    std::cout << graph.get_firstAdjVert('a') << std::endl;
 }

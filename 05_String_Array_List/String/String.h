@@ -25,7 +25,7 @@ public:
     bool        empty()    const { return !_size; }
     int         size()     const { return _size; }
     int         length()   const { return _size; }
-    int         capacity() const { return _capacity - 1; }
+    int         capacity() const { return _capacity_vert - 1; }
     const char* c_str()    const { return _element; }
     char        front()    const { return _element[0]; }
     char        back()     const { return _element[_size - 1]; }
@@ -125,6 +125,6 @@ public:
 
 private:
     char* _element = nullptr;
-    int   _capacity = 0;
+    int   _capacity_vert = 0;
     int   _size = 0;
 };

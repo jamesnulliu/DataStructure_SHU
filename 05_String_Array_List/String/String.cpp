@@ -14,24 +14,24 @@ std::istream& operator>>(std::istream& in, String& str)
     return in;
 }
 
-String::String(int capacity) : _capacity(capacity), _size(0)
+String::String(int capacity) : _capacity_vert(capacity), _size(0)
 {
-    _element = new char[_capacity + 1] {'\0'};
+    _element = new char[_capacity_vert + 1] {'\0'};
 }
 
 String::String(const char* str)
 {
-    _capacity = (int)strlen(str) + 1;
+    _capacity_vert = (int)strlen(str) + 1;
     _size = (int)strlen(str);
-    _element = new char[_capacity] {'\0'};
+    _element = new char[_capacity_vert] {'\0'};
     strncpy(_element, str, _size);
 }
 
 String::String(const std::string& str)
 {
-    _capacity = (int)str.capacity() + 1;
+    _capacity_vert = (int)str.capacity() + 1;
     _size = (int)str.size();
-    _element = new char[_capacity] {'\0'};
+    _element = new char[_capacity_vert] {'\0'};
     strncpy(_element, str.c_str(), _size);
 }
 
@@ -44,8 +44,8 @@ String& String::operator=(const String& str)
     if (_element == str._element) return *this;
     if (_element != nullptr) delete[] _element;
     _size = str._size;
-    _capacity = str._capacity;
-    _element = new char[_capacity] {'\0'};
+    _capacity_vert = str._capacity_vert;
+    _element = new char[_capacity_vert] {'\0'};
     strncpy(_element, str._element, _size);
     return *this;
 }
@@ -75,10 +75,10 @@ void String::erase(iterator thePosition)
 void String::insert(iterator thePosition, char ch)
 {
     iterator* theRealIterator = new iterator(&*thePosition);
-    if (_size + 1 + 1 >= _capacity) {
-        int old_capacity = _capacity;
-        _capacity *= 2;
-        char* temp = new char[_capacity];
+    if (_size + 1 + 1 >= _capacity_vert) {
+        int old_capacity = _capacity_vert;
+        _capacity_vert *= 2;
+        char* temp = new char[_capacity_vert];
         int j = 0;
         for (auto it = this->begin(); it != this->end(); ++it) {
             if (it == thePosition) {

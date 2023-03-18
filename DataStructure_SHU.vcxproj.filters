@@ -87,10 +87,10 @@
     <ClInclude Include="07_Graph\Graph_AM\Graph_AM.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Graph\Graph_Common\Graph.h">
+    <ClInclude Include="07_Graph\Graph_Common\Graph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Graph\Graph_Link\Graph_Link.h">
+    <ClInclude Include="07_Graph\Graph_Link\Graph_Link.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SkipList_Hash\header\ArrayList.h">
@@ -171,12 +171,15 @@
     <ClInclude Include="03_LinearList\ChainList\myExceptions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="07_Graph\NetWork\NetWork.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="05_String_Array_List\String\String.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Graph\Graph_Common\Graph.cpp">
+    <ClCompile Include="07_Graph\Graph_Common\Topological.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SkipList_Hash\source\.main.cpp">

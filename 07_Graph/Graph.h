@@ -8,14 +8,13 @@ public:
     using index = long long;
 public:
     virtual ~Graph() {}
-    constexpr virtual bool empty() const = 0;
-    constexpr virtual bool full() const = 0;
     constexpr virtual index get_vertIndex(const VertTy& v) const = 0;
     constexpr virtual sizet get_edgeNum(const VertTy& v) const = 0;
     virtual void insertVertex(const VertTy& v) = 0;
     virtual void insertArc(const VertTy& v1, const VertTy& v2) = 0;
     virtual void insertEdge(const VertTy& v1, const VertTy& v2) = 0;
     virtual void eraseVertex(const VertTy& v) = 0;
+    virtual void eraseArc(const VertTy& v1, const VertTy& v2) = 0;
     virtual void eraseEdge(const VertTy& v1, const VertTy& v2) = 0;
     // virtual WeightTy& get_weight(const VertTy& v1, const VertTy& v2) = 0;
     // virtual const WeightTy& get_weight(const VertTy& v1, const VertTy& v2) const = 0;

@@ -2,54 +2,65 @@
 
 #pragma once
 
-#include "../Graph.h"
 #include <vector>
 #include <iostream>
 #include <algorithm>
 #include <initializer_list>
+#include <string>
 
-template<class VertTy = char>
-class Graph_AM : Graph<VertTy, int>
+template<class VertTy = char, class WeightTy = int, WeightTy UNLINK = 0>
+class Graph_AM
 {
 public:
     using sizet = long long;
     using index = long long;
     constexpr static sizet MAX_VERTEXNUM = 10;
-    enum class ArcStatus : int { Unlinked = 0, Linked = 1 };
 
 public:
-    sizet max_vertNum;
-    std::vector<std::vector<ArcStatus>> arcMat;
-    std::vector<VertTy> vertList;
-    sizet vertNum;
+    sizet _capacity_vert;
+    std::vector<std::vector<WeightTy>> _arcMat;
+    std::vector<VertTy> _vertVec;
+    sizet _vertNum;
 
 public: // Constructor and Destructor
-    Graph_AM(sizet vertexNum = MAX_VERTEXNUM) :
-        max_vertNum(vertexNum),
-        arcMat(max_vertNum, std::vector<ArcStatus>(max_vertNum, ArcStatus::Unlinked)),
-        vertList(max_vertNum, VertTy()),
-        vertNum(0) {}
+    Graph_AM(sizet vertNum = MAX_VERTEXNUM) :
+        // Set capcity to {vertNum}:
+        _capacity_vert(vertNum),
+        // Create a [capacity * capacity] matrix to store arcs:
+        _arcMat(_capacity_vert, std::vector<WeightTy>(_capacity_vert, UNLINK)),
+        // Create a [1 * capcity] vector to store vertexes:
+        _vertVec(_capacity_vert, VertTy()),
+        // Set {_vertNum} to 0:
+        _vertNum(0) {}
     Graph_AM(std::initializer_list<VertTy> vertList) :
-        max_vertNum((sizet)vertList.size()),
-        arcMat(max_vertNum, std::vector<ArcStatus>(max_vertNum, ArcStatus::Unlinked)),
-        vertList(vertList),
-        vertNum((sizet)vertList.size()) {}
+        // Set capcity to {vertList.size()}:
+        _capacity_vert((sizet)vertList.size()),
+        // Create a [capacity * capacity] matrix to store arcs:
+        _arcMat(_capacity_vert, std::vector<WeightTy>(_capacity_vert, UNLINK)),
+        // Initialize {_vertVec} with {vertList}
+        _vertVec(vertList),
+        // Set {_vertNum} to 0:
+        _vertNum((sizet)vertList.size()) {
+        // Set self arc to zero:
+        for (index i = 0; i < (index)vertList.size(); ++i) {
+            _arcMat[i][i] = 0;
+        }
+    }
     ~Graph_AM() = default;
 
 private: // Tool Function
-    template<class _Container, class _Value>
-    constexpr auto _find(const _Container& container, const _Value& value) const {
-        return std::ranges::find(container, value);
+    constexpr bool indexValid(index i) const {
+        return i >= 0 && i < _vertNum;
     }
 public:
-    constexpr bool empty() const { return vertNum == 0; }
-    constexpr bool full() const { return vertNum >= max_vertNum; }
+    constexpr bool empty() const { return _vertNum == 0; }
+    constexpr bool full() const { return _vertNum >= _capacity_vert; }
     constexpr index get_vertIndex(const VertTy& v) const;
     constexpr sizet get_edgeNum(const VertTy& v) const;
 
     void insertVertex(const VertTy& v);
-    void insertArc(const VertTy& va, const VertTy& vb);
-    void insertEdge(const VertTy& va, const VertTy& vb);
+    void insertArc(const VertTy& va, const VertTy& vb, const WeightTy& weight = 1);
+    void insertEdge(const VertTy& va, const VertTy& vb, const WeightTy& weight = 1);
     void eraseVertex(const VertTy& v);
     void eraseArc(const VertTy& va, const VertTy& vb);
     void eraseEdge(const VertTy& va, const VertTy& vb);
@@ -62,142 +73,149 @@ public:
     void print_adjacencyMatrix();
 };
 
-template<class VertTy>
-constexpr Graph_AM<VertTy>::index Graph_AM<VertTy>::get_vertIndex(const VertTy& v) const {
-    auto firstOccurIter = this->_find(vertList, v);
-    index result = index(firstOccurIter - vertList.begin());
-    // IF not found, return -1:
-    if (result == (index)vertList.size()) { return -1; }
-    // IF found, return result:
-    return result;
+template<class VertTy, class WeightTy, WeightTy UNLINK>
+constexpr Graph_AM<VertTy, WeightTy, UNLINK>::index
+Graph_AM<VertTy, WeightTy, UNLINK>::get_vertIndex(const VertTy& v) const {
+    auto firstOccurIter = std::ranges::find(_vertVec, v);
+    return index(firstOccurIter - _vertVec.begin());
 };
 
-template<class VertTy>
-constexpr Graph_AM<VertTy>::sizet Graph_AM<VertTy>::get_edgeNum(const VertTy& v) const {
+template<class VertTy, class WeightTy, WeightTy UNLINK>
+constexpr Graph_AM<VertTy, WeightTy, UNLINK>::sizet
+Graph_AM<VertTy, WeightTy, UNLINK>::get_edgeNum(const VertTy& v) const {
     index vI = get_vertIndex(v);
     if (vI == -1) return 0;
     sizet num = 0;
-    for (auto& n : arcMat[vI]) {
-        if (n == ArcStatus::Linked) ++num;
+    for (auto& n : _arcMat[vI]) {
+        if (n != 0 && n != UNLINK) ++num;
     }
     return num;
 }
 
-template<class VertTy>
-inline void Graph_AM<VertTy>::insertVertex(const VertTy& v) {
+template<class VertTy, class WeightTy, WeightTy UNLINK>
+inline void Graph_AM<VertTy, WeightTy, UNLINK>::insertVertex(const VertTy& v) {
     if (full()) {
-        max_vertNum <<= 1;
-        vertList.resize(max_vertNum);
+        _capacity_vert <<= 1;
+        _vertVec.resize(_capacity_vert);
         // Resize row:
-        arcMat.resize(max_vertNum);
+        _arcMat.resize(_capacity_vert);
         // Then resize col in each row:
-        for (std::vector<ArcStatus>& vec : arcMat) { vec.resize(max_vertNum); }
+        for (auto& row : _arcMat) { row.resize(_capacity_vert); }
     }
-    vertList[vertNum++] = v;
+    _vertVec[_vertNum++] = v;
 }
 
-template<class VertTy>
-void Graph_AM<VertTy>::insertArc(const VertTy& va, const VertTy& vb) {
+template<class VertTy, class WeightTy, WeightTy UNLINK>
+void Graph_AM<VertTy, WeightTy, UNLINK>::insertArc
+(const VertTy& va, const VertTy& vb, const WeightTy& weight) {
     index vaI = get_vertIndex(va);
     index vbI = get_vertIndex(vb);
-    // IF {va} or {vb} is not found, return:
-    if (vaI == -1 || vbI == -1) { return; }
+    if (!indexValid(vaI) || !indexValid(vbI) || vaI == vbI) { return; }
     // Link an acr from {va} to {vb}:
-    arcMat[vaI][vbI] = ArcStatus::Linked;
+    _arcMat[vaI][vbI] = weight;
 }
 
-template<class VertTy>
-void Graph_AM<VertTy>::insertEdge(const VertTy& va, const VertTy& vb) {
+template<class VertTy, class WeightTy, WeightTy UNLINK>
+void Graph_AM<VertTy, WeightTy, UNLINK>::insertEdge
+(const VertTy& va, const VertTy& vb, const WeightTy& weight) {
     index vaI = get_vertIndex(va);
     index vbI = get_vertIndex(vb);
-    // IF {va} or {vb} is not found, return:
-    if (vaI == -1 || vbI == -1) { return; }
+    if (!indexValid(vaI) || !indexValid(vbI) || vaI == vbI) { return; }
     // Edge has 2 directions:
-    arcMat[vaI][vbI] = arcMat[vbI][vaI] = ArcStatus::Linked;
+    _arcMat[vaI][vbI] = _arcMat[vbI][vaI] = weight;
 }
 
-template<class VertTy>
-void Graph_AM<VertTy>::eraseVertex(const VertTy& v) {
+template<class VertTy, class WeightTy, WeightTy UNLINK>
+void Graph_AM<VertTy, WeightTy, UNLINK>::eraseVertex(const VertTy& v) {
     index vI = get_vertIndex(v);
-    if (vI == -1) return;
-    vertList.erase(vertList.begin() + vI);
-    arcMat.erase(arcMat.begin() + vI);
-    for (std::vector<ArcStatus>& row : arcMat) { row.erase(row.begin() + vI); }
-    --vertNum;
+    if (!indexValid(vI)) return;
+    _vertVec.erase(_vertVec.begin() + vI);
+    _arcMat.erase(_arcMat.begin() + vI);
+    for (auto& row : _arcMat) { row.erase(row.begin() + vI); }
+    --_vertNum;
 }
 
-template<class VertTy>
-void Graph_AM<VertTy>::eraseArc(const VertTy& va, const VertTy& vb) {
+template<class VertTy, class WeightTy, WeightTy UNLINK>
+void Graph_AM<VertTy, WeightTy, UNLINK>::eraseArc(const VertTy& va, const VertTy& vb) {
     index vaI = get_vertIndex(va);
     index vbI = get_vertIndex(vb);
-    if (vaI == -1 || vbI == -1) return;
-    arcMat[vaI][vbI] = ArcStatus::Unlinked;
+    if (!indexValid(vaI) || !indexValid(vbI) || vaI == vbI) return;
+    _arcMat[vaI][vbI] = UNLINK;
 }
 
-template<class VertTy>
-void Graph_AM<VertTy>::eraseEdge(const VertTy& va, const VertTy& vb) {
+template<class VertTy, class WeightTy, WeightTy UNLINK>
+void Graph_AM<VertTy, WeightTy, UNLINK>::eraseEdge(const VertTy& va, const VertTy& vb) {
     index vaI = get_vertIndex(va);
     index vbI = get_vertIndex(vb);
-    if (vaI == -1 || vbI == -1) return;
+    if (!indexValid(vaI) || !indexValid(vbI) || vaI == vbI) return;
     // Erase both arcs:
-    arcMat[vaI][vbI] = arcMat[vbI][vaI] = ArcStatus::Unlinked;
+    _arcMat[vaI][vbI] = _arcMat[vbI][vaI] = UNLINK;
 }
 
-template<class VertTy>
-void Graph_AM<VertTy>::print_adjacencyMatrix() {
-    for (int i = 0; i <= vertNum; ++i) {
+template<class VertTy, class WeightTy, WeightTy UNLINK>
+void Graph_AM<VertTy, WeightTy, UNLINK>::print_adjacencyMatrix() {
+    for (int i = 0; i <= _vertNum; ++i) {
         putchar('_'); putchar('_'); putchar('_'); putchar('_'); putchar('_');
     }
     putchar('\n');
     std::cout.fill('_');
     printf("____|");
-    for (index i = 0; i < vertNum; ++i) {
+    for (index i = 0; i < _vertNum; ++i) {
         std::cout.width(4);
-        std::cout << vertList[i] << '|';
+        std::cout << _vertVec[i] << '|';
     }
     printf("\n");
-    for (index i = 0; i < vertNum; ++i) {
+    for (index i = 0; i < _vertNum; ++i) {
         std::cout.fill('_');
         std::cout.width(4);
-        std::cout << vertList[i] << '|';
-        for (index j = 0; j < vertNum; ++j) {
+        std::cout << _vertVec[i] << '|';
+        for (index j = 0; j < _vertNum; ++j) {
             std::cout.fill(' ');
-            std::cout.width(4);
-            std::cout << (arcMat[i][j] == ArcStatus::Linked ? 1 : 0) << ' ';
+            std::cout.width(5);
+            if (i == j) {
+                std::cout << "0 ";
+            } else if (_arcMat[i][j] == UNLINK) {
+                std::cout << "x ";
+            } else {
+                std::cout << (std::to_string(_arcMat[i][j]) + " ");
+            }
         }
         std::cout << std::endl;
     }
 }
 
-template<class VertTy>
-VertTy& Graph_AM<VertTy>::get_firstAdjVert(const VertTy& v) {
-    const auto cThis = this;
+template<class VertTy, class WeightTy, WeightTy UNLINK>
+VertTy& Graph_AM<VertTy, WeightTy, UNLINK>::get_firstAdjVert(const VertTy& v) {
+    auto cThis = const_cast<Graph_AM<VertTy>const*>(this);
     return const_cast<VertTy&>(cThis->get_firstAdjVert(v));
 }
 
-template<class VertTy>
-const VertTy& Graph_AM<VertTy>::get_firstAdjVert(const VertTy& v) const {
+template<class VertTy, class WeightTy, WeightTy UNLINK>
+const VertTy& Graph_AM<VertTy, WeightTy, UNLINK>::get_firstAdjVert(const VertTy& v) const {
     index vI = this->get_vertIndex(v);
-    if (vI == -1) { throw "[Failed] Vertex Not Found!"; }
-    auto resIt = std::ranges::find(arcMat[vI], ArcStatus::Linked);
-    if (resIt == arcMat[vI].end()) { throw"[Failed] No Linked Vertex!"; }
-    index resVertIndex = resIt - arcMat[vI].begin();
-    return this->vertList[resVertIndex];
+    if (!indexValid(vI)) { throw "[Failed] Vertex Not Found!"; }
+    auto lambda = [](const WeightTy& x) { return x != 0 && x != UNLINK; };
+    auto resIt = std::ranges::find_if(_arcMat[vI], lambda);
+    if (resIt == _arcMat[vI].end()) { throw"[Failed] No Linked Vertex!"; }
+    index resVertIndex = resIt - _arcMat[vI].begin();
+    return this->_vertVec[resVertIndex];
 }
 
-template<class VertTy>
-VertTy& Graph_AM<VertTy>::get_nextAdjVert(const VertTy& va, const VertTy& vb) {
-    const auto cThis = this;
+template<class VertTy, class WeightTy, WeightTy UNLINK>
+VertTy& Graph_AM<VertTy, WeightTy, UNLINK>::get_nextAdjVert(const VertTy& va, const VertTy& vb) {
+    auto cThis = const_cast<Graph_AM<VertTy>const*>(this);
     return const_cast<VertTy&>(cThis->get_nextAdjVert(va, vb));
 }
 
-template<class VertTy>
-const VertTy& Graph_AM<VertTy>::get_nextAdjVert(const VertTy& va, const VertTy& vb) const {
+template<class VertTy, class WeightTy, WeightTy UNLINK>
+const VertTy&
+Graph_AM<VertTy, WeightTy, UNLINK>::get_nextAdjVert(const VertTy& va, const VertTy& vb) const {
     index vaI = this->get_vertIndex(va);
     index vbI = this->get_vertIndex(vb);
     if (vaI == -1 || vbI == -1) { throw"[Failed] Vertex Not Found!"; }
-    auto resIt = std::find(arcMat[vaI].begin() + vbI + 1, arcMat[vaI].end(), ArcStatus::Linked);
-    if (resIt == arcMat[vaI].end()) { throw"[Failed] No Linked Vertex!"; }
-    index resVertIndex = resIt - arcMat[vaI].begin();
-    return this->vertList[resVertIndex];
+    auto lambda = [](const WeightTy& x) { return x != 0 && x != UNLINK; };
+    auto resIt = std::find(_arcMat[vaI].begin() + vbI + 1, _arcMat[vaI].end(), lambda);
+    if (resIt == _arcMat[vaI].end()) { throw"[Failed] No Linked Vertex!"; }
+    index resVertIndex = resIt - _arcMat[vaI].begin();
+    return this->_vertVec[resVertIndex];
 }

@@ -1,0 +1,9 @@
+{
+    "cmake.generator": "MinGW Makefiles",
+    "C_Cpp.default.cppStandard": "c++23",
+    "files.associations": {
+        "concepts": "cpp",
+        "ranges": "cpp"
+    },
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+}

@@ -157,8 +157,9 @@
     <ClInclude Include="04_Stack_Queue\Stack\linkedStack.h" />
     <ClInclude Include="04_Stack_Queue\Stack\myExceptions.h" />
     <ClInclude Include="04_Stack_Queue\Stack\stack.h" />
+    <ClInclude Include="05_String_Array_List\Matrix\myExceptions.h" />
     <ClInclude Include="05_String_Array_List\Matrix\SparseMatrix.h" />
-    <ClInclude Include="05_String_Array_List\Matrix\Triple.h" />
+    <ClInclude Include="05_String_Array_List\Matrix\MatrixTerm.h" />
     <ClInclude Include="05_String_Array_List\String\ChangeLength1D.h" />
     <ClInclude Include="05_String_Array_List\String\KMP.h" />
     <ClInclude Include="05_String_Array_List\String\String.h" />

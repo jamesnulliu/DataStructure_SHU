@@ -177,7 +177,10 @@
     <ClInclude Include="05_String_Array_List\Matrix\SparseMatrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="05_String_Array_List\Matrix\Triple.h">
+    <ClInclude Include="05_String_Array_List\Matrix\MatrixTerm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="05_String_Array_List\Matrix\myExceptions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

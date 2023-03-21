@@ -21,4 +21,5 @@ int main()
     graph.print_adjacencyMatrix();
     std::cout << graph.get_firstAdjVert('a') << std::endl;
     std::cout << graph.get_weight('b','e')<<std::endl;
+    std::cout<<__cplusplus;
 }

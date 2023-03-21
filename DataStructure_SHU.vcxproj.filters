@@ -174,6 +174,12 @@
     <ClInclude Include="07_Graph\NetWork\NetWork.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="05_String_Array_List\Matrix\SparseMatrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="05_String_Array_List\Matrix\Triple.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="05_String_Array_List\String\String.cpp">

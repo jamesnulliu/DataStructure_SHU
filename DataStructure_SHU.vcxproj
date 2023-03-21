@@ -195,6 +195,7 @@
     <ClCompile Include=".main.cpp" />
     <ClCompile Include="05_String_Array_List\String\String.cpp" />
     <ClCompile Include="07_Graph\Graph_Common\Topological.cpp" />
+    <ClCompile Include="07_Graph\MinimumSpanningTree\Kruskal.cpp" />
     <ClCompile Include="SkipList_Hash\source\.main.cpp" />
     <ClCompile Include="SkipList_Hash\source\LZW_compression.cpp" />
     <ClCompile Include="SkipList_Hash\source\UselessStringConvert.cpp" />

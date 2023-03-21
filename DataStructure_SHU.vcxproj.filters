@@ -194,5 +194,8 @@
     <ClCompile Include=".main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="07_Graph\MinimumSpanningTree\Kruskal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

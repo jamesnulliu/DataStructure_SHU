@@ -164,6 +164,7 @@
     <ClInclude Include="06_Tree_Forest\ArrayBinaryTree\ArrayBinaryTree.h" />
     <ClInclude Include="06_Tree_Forest\ArrayBinaryTree\BInaryTree.h" />
     <ClInclude Include="06_Tree_Forest\DisjointSetUnion\DSU.h" />
+    <ClInclude Include="06_Tree_Forest\Forest\forest.h" />
     <ClInclude Include="06_Tree_Forest\LinkedBinaryTree\BInaryTree.h" />
     <ClInclude Include="06_Tree_Forest\LinkedBinaryTree\BinaryTreeNode.h" />
     <ClInclude Include="06_Tree_Forest\LinkedBinaryTree\LinkedBinaryTree.h" />
@@ -194,11 +195,16 @@
   <ItemGroup>
     <ClCompile Include=".main.cpp" />
     <ClCompile Include="05_String_Array_List\String\String.cpp" />
+    <ClCompile Include="06_Tree_Forest\Forest\foodchain.cpp" />
+    <ClCompile Include="06_Tree_Forest\Forest\gangs.cpp" />
     <ClCompile Include="07_Graph\Graph_Common\Topological.cpp" />
     <ClCompile Include="07_Graph\MinimumSpanningTree\Kruskal.cpp" />
     <ClCompile Include="SkipList_Hash\source\.main.cpp" />
     <ClCompile Include="SkipList_Hash\source\LZW_compression.cpp" />
     <ClCompile Include="SkipList_Hash\source\UselessStringConvert.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="06_Tree_Forest\Forest\foodchain.exe" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

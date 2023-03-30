@@ -174,7 +174,10 @@
     <ClInclude Include="07_Graph\NetWork\NetWork.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="06_Tree_Forest\Forest\forest.h">
+    <ClInclude Include="06_Tree_Forest\Forest\Tree_binary.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="06_Tree_Forest\Forest\Tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

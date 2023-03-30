@@ -164,7 +164,8 @@
     <ClInclude Include="06_Tree_Forest\ArrayBinaryTree\ArrayBinaryTree.h" />
     <ClInclude Include="06_Tree_Forest\ArrayBinaryTree\BInaryTree.h" />
     <ClInclude Include="06_Tree_Forest\DisjointSetUnion\DSU.h" />
-    <ClInclude Include="06_Tree_Forest\Forest\forest.h" />
+    <ClInclude Include="06_Tree_Forest\Forest\Tree.h" />
+    <ClInclude Include="06_Tree_Forest\Forest\Tree_binary.h" />
     <ClInclude Include="06_Tree_Forest\LinkedBinaryTree\BInaryTree.h" />
     <ClInclude Include="06_Tree_Forest\LinkedBinaryTree\BinaryTreeNode.h" />
     <ClInclude Include="06_Tree_Forest\LinkedBinaryTree\LinkedBinaryTree.h" />

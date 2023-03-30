@@ -53,7 +53,7 @@ private:
     void find_dfs_recBody(LBTNode<VertTy>* t, const VertTy& target);
 
 private:
-    LBTNode<VertTy>* root;
+    LBTNode<VertTy>* _root;
 };
 
 template<class VertTy>
@@ -72,28 +72,28 @@ void LBinTree<VertTy>::preOrder___print() {
         std::cout << node->data;
     };
     // visit(x); // Invoke function {visit} to output.
-    this->preOrder___recBody(this->root, visit);
+    this->preOrder___recBody(this->_root, visit);
 }
 
 template<class VertTy>
 void LBinTree<VertTy>::inOrder____print() {
-    this->inOrder____recBody(this->root, [](LBTNode<VertTy>* node) { std::cout << node->data; });
+    this->inOrder____recBody(this->_root, [](LBTNode<VertTy>* node) { std::cout << node->data; });
 }
 
 template<class VertTy>
 void LBinTree<VertTy>::postOrder__print() {
-    this->postOrder__recBody(this->root, [](LBTNode<VertTy>* node) { std::cout << node->data; });
+    this->postOrder__recBody(this->_root, [](LBTNode<VertTy>* node) { std::cout << node->data; });
 }
 
 template<class VertTy>
 void LBinTree<VertTy>::levelOrder_print() {
-    this->levelOrder_bfsBody(this->root, [](LBTNode<VertTy>* node) { std::cout << node->data; });
+    this->levelOrder_bfsBody(this->_root, [](LBTNode<VertTy>* node) { std::cout << node->data; });
 }
 
 template<class VertTy>
 size_t LBinTree<VertTy>::size() {
     size_t numOfNode = 0;
-    this->preOrder___recBody(this->root, [&numOfNode](LBTNode<VertTy>* t) { ++numOfNode; });
+    this->preOrder___recBody(this->_root, [&numOfNode](LBTNode<VertTy>* t) { ++numOfNode; });
     return numOfNode;
 }
 
@@ -109,7 +109,7 @@ template<class VertTy>
 LBTNode<VertTy>* LBinTree<VertTy>::find_dfs(const VertTy& elem) {
     LBTNode<VertTy>* ptr = nullptr;
     try {
-        find_dfs_recBody(this->root, elem);
+        find_dfs_recBody(this->_root, elem);
     } catch (LBTNode<VertTy>* result) {
         ptr = result;
     }
@@ -127,9 +127,9 @@ void LBinTree<VertTy>::find_dfs_recBody(LBTNode<VertTy>* t, const VertTy& elem) 
 
 template<class VertTy>
 LBTNode<VertTy>* LBinTree<VertTy>::find_bfs(const VertTy& elem) {
-    if (this->root == nullptr) { return nullptr; }
+    if (this->_root == nullptr) { return nullptr; }
     std::deque<LBTNode<VertTy>*> que;
-    que.push_back(this->root);
+    que.push_back(this->_root);
     while (!que.empty()) {
         auto front = que.front();
         que.pop_front();
@@ -145,10 +145,10 @@ LBTNode<VertTy>* LBinTree<VertTy>::find_bfs(const VertTy& elem) {
 
 template<class VertTy>
 LBTNode<VertTy>* LBinTree<VertTy>::findParent(LBTNode<VertTy>* target) {
-    if (this->root == nullptr) { return nullptr; }
-    if (this->root == target) { return nullptr; }
+    if (this->_root == nullptr) { return nullptr; }
+    if (this->_root == target) { return nullptr; }
     std::deque<LBTNode<VertTy>*> que;
-    que.push_back(this->root);
+    que.push_back(this->_root);
     while (!que.empty()) {
         auto front = que.front();
         que.pop_front();
@@ -164,11 +164,11 @@ LBTNode<VertTy>* LBinTree<VertTy>::findParent(LBTNode<VertTy>* target) {
 template<class VertTy>
 void LBinTree<VertTy>::insert_to_left_(const VertTy& elem, LBTNode<VertTy>* parent) {
     auto node = new LBTNode<VertTy>{ elem,nullptr,nullptr };
-    if (this->root == nullptr) {
-        root = node;
+    if (this->_root == nullptr) {
+        _root = node;
     } else if (parent == nullptr) {
-        node->left_ = this->root;
-        this->root = node;
+        node->left_ = this->_root;
+        this->_root = node;
     } else {
         node->left_ = parent->left_;
         parent->left_ = node;
@@ -178,11 +178,11 @@ void LBinTree<VertTy>::insert_to_left_(const VertTy& elem, LBTNode<VertTy>* pare
 template<class VertTy>
 void LBinTree<VertTy>::insert_to_right(const VertTy& elem, LBTNode<VertTy>* parent) {
     auto node = new LBTNode<VertTy>{ elem,nullptr,nullptr };
-    if (this->root == nullptr) {
-        root = node;
+    if (this->_root == nullptr) {
+        _root = node;
     } else if (parent == nullptr) {
-        node->right = this->root;
-        this->root = node;
+        node->right = this->_root;
+        this->_root = node;
     } else {
         node->right = parent->right;
         parent->right = node;
@@ -220,14 +220,14 @@ template<class VertTy> // In template class {LBinTree},
 template<class _Pred>  // there is a template function {re_pre__Order}:
 void LBinTree<VertTy>::levelOrder_bfsBody(LBTNode<VertTy>* t, const _Pred& pred) {
     // IF the tree is empty, return directly:
-    if (this->root == nullptr) return;
+    if (this->_root == nullptr) return;
     // Create a queue for board-first-serach:
     std::deque< LBTNode<VertTy>* > que;
     // Push non-empty root to {queue}:
     // [Note] The {push} operation creates A NEW POINTER, and copy the value from parameter.
     //        So you should never build a queue of reference (e.g., deque<int&> que),
     //        becase when pushing, you cannot create a NEW reference object!
-    que.push_back(this->root);
+    que.push_back(this->_root);
     // Loop while there is still nodes in queue:
     while (!que.empty()) {
         LBTNode<VertTy>* front = que.front(); // Get front node.

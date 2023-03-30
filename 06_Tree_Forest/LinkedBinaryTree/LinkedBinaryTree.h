@@ -9,28 +9,28 @@ class linkedBinaryTree :
     public binaryTree<binaryTreeNode<E>>
 {
 public:
-    linkedBinaryTree() { root = nullptr; treeSize = 0; }
+    linkedBinaryTree() { _root = nullptr; treeSize = 0; }
     linkedBinaryTree(const linkedBinaryTree<E>& theTree);
     ~linkedBinaryTree() { erase(); }
     bool empty() const { return treeSize == 0; }
     int size() const { return treeSize; }
-    void erase() { postOrder(dispose); root = nullptr; treeSize = 0; }
+    void erase() { postOrder(dispose); _root = nullptr; treeSize = 0; }
 public:
-    void preOrder(void(*theVisit)(binaryTreeNode<E>*)) { visit = theVisit; preOrder(root); }
-    void preOrder_iterative(void(*theVisit)(binaryTreeNode<E>*)) { visit = theVisit; preOrder_iterative(root); }
+    void preOrder(void(*theVisit)(binaryTreeNode<E>*)) { visit = theVisit; preOrder(_root); }
+    void preOrder_iterative(void(*theVisit)(binaryTreeNode<E>*)) { visit = theVisit; preOrder_iterative(_root); }
     void preOrderOutput() { preOrder(output); std::cout << std::endl; }
 
-    void inOrder(void(*theVisit)(binaryTreeNode<E>*)) { visit = theVisit; inOrder(root); }
-    void inOrder_iterative(void(*theVisit)(binaryTreeNode<E>*)) { visit = theVisit; inOrder_iterative(root); }
+    void inOrder(void(*theVisit)(binaryTreeNode<E>*)) { visit = theVisit; inOrder(_root); }
+    void inOrder_iterative(void(*theVisit)(binaryTreeNode<E>*)) { visit = theVisit; inOrder_iterative(_root); }
     void inOrderOutput() { inOrder(output); std::cout << std::endl; }
 
-    void postOrder(void(*theVisit)(binaryTreeNode<E>*)) { visit = theVisit; postOrder(root); }
+    void postOrder(void(*theVisit)(binaryTreeNode<E>*)) { visit = theVisit; postOrder(_root); }
     void postOrderOutput() { postOrder(output); std::cout << std::endl; }
 
-    void levelOrder(void(*theVisit)(binaryTreeNode<E>*)) { visit = theVisit; levelOrder(root); }
+    void levelOrder(void(*theVisit)(binaryTreeNode<E>*)) { visit = theVisit; levelOrder(_root); }
     void levelOrderOutput() { levelOrder(output); std::cout << std::endl; }
 public:
-    int height() const { return height(root); }
+    int height() const { return height(_root); }
     /**
     * @brief	Compare "*this" and "theTree" in an iterative way.
     * @param	theTree The compared tree.
@@ -44,7 +44,7 @@ public:
     void swapTrees(binaryTreeNode<E>* t);
     int maxHeightDifference(const binaryTreeNode<E>* t);
 protected:
-    binaryTreeNode<E>* root;	// The pointer points to the root of the tree.
+    binaryTreeNode<E>* _root;	// The pointer points to the root of the tree.
     int treeSize;				// The number of the nodes of the tree.
 private:
     // @brief	Static function; output the nodes.
@@ -71,40 +71,40 @@ private:
 template<class E>
 linkedBinaryTree<E>::linkedBinaryTree(const linkedBinaryTree<E>& theTree) {
     // If "theTree" has no node, return.
-    if(!(treeSize = theTree.treeSize)) return;
+    if (!(treeSize = theTree.treeSize)) return;
     // Initialize "this->root" with "theTree->root".
-    root = new binaryTreeNode<E>(theTree.root->element);
+    _root = new binaryTreeNode<E>(theTree._root->element);
     // Create the iterator for two root.
-    binaryTreeNode<E>* tA = root;
-    const binaryTreeNode<E>* tB = theTree.root;
+    binaryTreeNode<E>* tA = _root;
+    const binaryTreeNode<E>* tB = theTree._root;
     // Create the stack for iteration.
     std::stack<binaryTreeNode<E>*> s;
     bool flag = true;
     // The following iteration is base on fuction "inorder_iterative".
-    while(true) {
-        if(flag) {
+    while (true) {
+        if (flag) {
             flag = false;
             s.push(tB);
-            while(tB->leftChild != nullptr) {
+            while (tB->leftChild != nullptr) {
                 s.push(tB = tB->leftChild);
                 tA = tA->leftChild = new binaryTreeNode<E>(tB->element);
             }
         }
         s.pop();
-        if(tB->rightChild != nullptr) {
+        if (tB->rightChild != nullptr) {
             tB = tB->rightChild;
             tA = tA->rightChild = new binaryTreeNode<E>(tB->element);
             flag = true;
             continue;
         }
-        if(s.empty()) { return; }
+        if (s.empty()) { return; }
         tB = s.top();
     }
 }
 
 template<class E>
 void linkedBinaryTree<E>::preOrder(binaryTreeNode<E>* t) {
-    if(t == nullptr) return;
+    if (t == nullptr) return;
     linkedBinaryTree<E>::visit(t);
     preOrder(t->leftChild);
     preOrder(t->rightChild);
@@ -116,30 +116,30 @@ void linkedBinaryTree<E>::preOrder_iterative(binaryTreeNode<E>* t) {
     // Then, only when we step into a right child, "flag" will turn to "true", otherwise is "false".
     bool flag = true;
     // The following iteration is based on fuction "inorder_iterative".
-    while(true) {
-        if(flag) {
+    while (true) {
+        if (flag) {
             flag = false;
             s.push(t);
             linkedBinaryTree::visit(t);
-            while(t->leftChild != nullptr) {
+            while (t->leftChild != nullptr) {
                 s.push(t = t->leftChild);
                 linkedBinaryTree::visit(t);
             }
         }
         s.pop();
-        if(t->rightChild != nullptr) {
+        if (t->rightChild != nullptr) {
             t = t->rightChild;
             flag = true;
             continue;
         }
-        if(s.empty()) { return; }
+        if (s.empty()) { return; }
         t = s.top();
     }
 }
 
 template<class E>
 void linkedBinaryTree<E>::inOrder(binaryTreeNode<E>* t) {
-    if(t == nullptr) { return; }
+    if (t == nullptr) { return; }
     inOrder(t->leftChild);
     linkedBinaryTree<E>::visit(t);
     inOrder(t->rightChild);
@@ -150,36 +150,36 @@ void linkedBinaryTree<E>::inOrder_iterative(binaryTreeNode<E>* t) {
     // At first, "flag" is "true", indicating that it is the first iteration.
     // Then, only when we step into a right child, "flag" will turn to "true", otherwise is "false".
     bool flag = true;
-    while(true) {
+    while (true) {
         // IF: "flag" is "true", which means if it is the first iteration or we stepped into a right child in last iteration.
-        if(flag) {
+        if (flag) {
             // Switch "flag" to "false".
             flag = false;
             // Push "t" to the stack;
             // "t" indicates either the root of the tree, or the right child we stepped into in last iteration.
             s.push(t);
             // Push the left children to the stack.
-            while(t->leftChild != nullptr) {
+            while (t->leftChild != nullptr) {
                 s.push(t = t->leftChild);
             }
         }
         visit(t);
         s.pop();
         // IF: "t" has a right child.
-        if(t->rightChild != nullptr) {
+        if (t->rightChild != nullptr) {
             t = t->rightChild;
             flag = true;
             continue;
         }
         // IF: stack is empty, means that the iteration is over.
-        if(s.empty()) { return; }
+        if (s.empty()) { return; }
         t = s.top();
     }
 }
 
 template<class E>
 void linkedBinaryTree<E>::postOrder(binaryTreeNode<E>* t) {
-    if(t != nullptr) {
+    if (t != nullptr) {
         postOrder(t->leftChild);
         postOrder(t->rightChild);
         linkedBinaryTree<E>::visit(t);
@@ -189,17 +189,17 @@ void linkedBinaryTree<E>::postOrder(binaryTreeNode<E>* t) {
 template<class E>
 void linkedBinaryTree<E>::levelOrder(binaryTreeNode<E>* t) {
     std::queue<binaryTreeNode<E>*> q;
-    while(t != nullptr) {
+    while (t != nullptr) {
         linkedBinaryTree<E>::visit(t);
         // Insert "t"'s children to the queue.
-        if(t->leftChild != nullptr) {
+        if (t->leftChild != nullptr) {
             q.push(t->leftChild);
         }
-        if(t->rightChild != nullptr) {
+        if (t->rightChild != nullptr) {
             q.push(t->rightChid);
         }
         // Extract next node to visit.
-        if(q.empty()) { return; }
+        if (q.empty()) { return; }
         t = q.front();
         q.pop();
     }
@@ -207,10 +207,10 @@ void linkedBinaryTree<E>::levelOrder(binaryTreeNode<E>* t) {
 
 template<class E>
 int linkedBinaryTree<E>::height(binaryTreeNode<E>* t) {
-    if(t == nullptr) return 0;
+    if (t == nullptr) return 0;
     int hL = height(t->leftChild);
     int hR = height(t->rightChild);
-    if(hL > hR) return ++hL;
+    if (hL > hR) return ++hL;
     else return ++hR;
 }
 
@@ -221,22 +221,22 @@ int* linkedBinaryTree<E>::levelCount(binaryTreeNode<E>* t) {
     // int* counter = new int[ceil(log(treeSize + 1) / log(2))];
     int* counter = new int[treeSize];
     int theLevel = 1;
-    int buffer[2] = {1, 0};
-    while(t != nullptr) {
+    int buffer[2] = { 1, 0 };
+    while (t != nullptr) {
         visit(t);
-        if(t->leftChild != nullptr) {
+        if (t->leftChild != nullptr) {
             q.push(t->leftChild);
             buffer[(theLevel + 1) % 2]++;
             counter[theLevel + 1]++;
         }
-        if(t->rightChild != nullptr) {
+        if (t->rightChild != nullptr) {
             q.push(t->rightChild);
             buffer[(theLevel + 1) % 2]++;
             counter[theLevel + 1]++;
         }
-        try { t = q.front(); } catch(queueEmpty) { return counter; }
+        try { t = q.front(); } catch (queueEmpty) { return counter; }
         q.pop();
-        if(--buffer[theLevel % 2] == 0) {
+        if (--buffer[theLevel % 2] == 0) {
             std::cout << std::endl;
             theLevel++;
         }
@@ -245,57 +245,57 @@ int* linkedBinaryTree<E>::levelCount(binaryTreeNode<E>* t) {
 
 template<class E>
 bool linkedBinaryTree<E>::compare(const linkedBinaryTree<E>& theTree) {
-    if(treeSize != theTree.size) return false;
-    const binaryTreeNode<E>* tA = root, * tB = theTree.root;
+    if (treeSize != theTree.size) return false;
+    const binaryTreeNode<E>* tA = _root, * tB = theTree._root;
     // Create the stack for iteration.
     std::stack<binaryTreeNode<E>*> sA, sB;
     bool flag = true;
     // The following iteration is base on fuction "inorder_iterative".
-    while(true) {
+    while (true) {
         // Return ocassion 1: The element is different, return false.
-        if(tA->element != tB->element) return false;
-        if(flag) {
+        if (tA->element != tB->element) return false;
+        if (flag) {
             flag = false;
             sA.push(tA);
             sB.push(tB);
-            while(tA->leftChild != nullptr) {
+            while (tA->leftChild != nullptr) {
                 // Return ocassion 2: While "tA" is going left but "tB" has no left child, return false.
                 // But perhaps tB has more left child, so see Return ocassion 3.
-                if(tB->leftChild == nullptr) return false;
+                if (tB->leftChild == nullptr) return false;
                 sA.push(tA = tA->leftChild);
                 sB.push(tB = tB->leftChild);
             }
             // Return ocassion 3: "tA" has no left child but "tB" has, return false.
-            if(tB->leftChild != nullptr) return false;
+            if (tB->leftChild != nullptr) return false;
         }
         sA.pop();
         sB.pop();
-        if(tA->rightChild != nullptr) {
+        if (tA->rightChild != nullptr) {
             // Return ocassion 3: "tA" has right child but "tB" does not, return false.
-            if(tB->rightChild == nullptr) return false;
+            if (tB->rightChild == nullptr) return false;
             tA = tA->rightChild;
             tB = tB->rightChild;
             flag = true;
             continue;
         }
-        if(sA.empty()) { return true; }
+        if (sA.empty()) { return true; }
         tB = sA.top();
     }
 }
 template<class E>
 bool linkedBinaryTree<E>::compare_recursive(const linkedBinaryTree<E>& theTree) {
-    if(treeSize != theTree.size) return false;
-    return m_compare_recursive(root, theTree.root);
+    if (treeSize != theTree.size) return false;
+    return m_compare_recursive(_root, theTree._root);
 }
 template<class E>
 bool linkedBinaryTree<E>::m_compare_recursive(binaryTreeNode<E>* t1, binaryTreeNode<E>* t2) {
-    if(t1 && t2 && t1->element == t2->element) {
-        if(m_compare_recursive(t1->leftChild, t2->leftChild) && m_compare_recursive(t1->rightChild, t2->rightChild)) {
+    if (t1 && t2 && t1->element == t2->element) {
+        if (m_compare_recursive(t1->leftChild, t2->leftChild) && m_compare_recursive(t1->rightChild, t2->rightChild)) {
             return true;
         } else {
             return false;
         }
-    } else if(t1 == nullptr && t2 == nullptr) {
+    } else if (t1 == nullptr && t2 == nullptr) {
         return true;
     } else {
         return false;
@@ -304,7 +304,7 @@ bool linkedBinaryTree<E>::m_compare_recursive(binaryTreeNode<E>* t1, binaryTreeN
 
 template<class E>
 void linkedBinaryTree<E>::swapTrees(binaryTreeNode<E>* t) {
-    if(t == nullptr) return;
+    if (t == nullptr) return;
     swapTrees(t->leftChild);
     swapTrees(t->rightChild);
     std::swap(t->leftChild, t->rightChild);
@@ -312,13 +312,13 @@ void linkedBinaryTree<E>::swapTrees(binaryTreeNode<E>* t) {
 
 template<class E>
 int linkedBinaryTree<E>::maxHeightDifference(const binaryTreeNode<E>* t) {
-    int height[2] = {0 , 0};
+    int height[2] = { 0 , 0 };
     m_heightDifference(t, height, 0);
     return height[1] - height[0];
 }
 template<class E>
 void linkedBinaryTree<E>::m_heightDifference(const binaryTreeNode<E>* t, int* height, int curHeight) {
-    if(t == nullptr) {
+    if (t == nullptr) {
         --curHeight < height[0] ? (height[0] = curHeight) : (curHeight > height[1]) ? (height[1] = curHeight) : 1;
         return;
     }

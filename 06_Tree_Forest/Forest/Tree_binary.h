@@ -10,7 +10,7 @@ template<class _ElemTy>
 class Tree_binary
 {
 private:
-    Node* root = nullptr;
+    Node* _root = nullptr;
 public:
     Tree_binary() = default;
 };

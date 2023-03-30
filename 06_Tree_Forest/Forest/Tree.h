@@ -21,7 +21,7 @@ class Tree
 public:
     using Node = TreeNode<_ElemTy>;
 private:
-    Node* root;
+    Node* _root;
 public:
     Tree() = default;
     Tree(const Tree&) = delete;
@@ -34,35 +34,40 @@ public:
      * | >>> [e  f] [] [g] | >>> [e f] [] [g]  |     b  c  d       |
      * | >>> [] [h]    [i] | >>> [] [h] [i]    |  +--+     +       |
      * | >>>     []     [] | >>> [] []         |  e  f     g       |
-     * |                   |                   |     +     +       |
-     * |                   |                   |     h     i       |
+     * |---------------------------------------|     +     +       |
+     * | INPUT 1 and INPUT 2 are the same      |     h     i       |
      * -------------------------------------------------------------
     */
     class build_fn
     {
     private:
-        Node* buildRoot;
+        Node** _rRoot;
         std::deque<std::istringstream> childrenQueue = {};
     public:
-        build_fn(Tree<_ElemTy>& tree) :buildRoot(tree.root) {}
+        build_fn(Tree<_ElemTy> const* tree) : _rRoot(&(tree->_root)) {}
         void operator()() {
             std::cout << "[Tree] Tree Building start: " << std::endl;
-            std::string inputLine{};
-            std::getline(std::cin, inputLine);          // Get a line of input
-            auto childrenQueue = spliter(inputLine);      // Split the line
+            auto childrenQueue = getALine();
             _ElemTy data{};                             // Create a data with default constructor
-            childrenQueue[0] >> data;                     // Input the only value (root is a single node, having no siblings)
-            buildRoot = new Node{ data };                    // Create {root}
+            childrenQueue[0] >> data;                   // Input the only value (root is a single node, having no siblings)
+            *_rRoot = new Node{ data };                 // Create {root}
 
             std::queue<Node*> parentQueue;              // Create a queue to store the parents waiting for construction
-            parentQueue.push(buildRoot);                     // Push {root} to queue as the next step is to build it's children
+            parentQueue.push(*_rRoot);                  // Push {root} to queue as the next step is to build it's children
 
             while (!parentQueue.empty()) {
-                Node* current = parentQueue.front();    // Get queue front
-                parentQueue.pop();                      // Pop queue
+                std::getline(std::cin, inputLine);      // Get a line of input
+                childrenQueue = spliter(inputLine);     // Split the line
+                for (auto& istr : childrenQueue) {
+                    Node* current = parentQueue.front();    // Get queue front
+                    parentQueue.pop();                      // Pop queue
+                    while (istr.good()) {
+                    }
+                }
             }
         }
     private:
+        // @brief Split a string to several istringstreams by detecting '[' and ']'.
         std::vector<std::istringstream> spliter(const std::string& str) {
             std::vector<std::istringstream> childrenQueue{};
             std::string tempStr{};
@@ -73,7 +78,13 @@ public:
                 default: { tempStr += ch; break; }
                 }
             }
-            return childrenQueue;
+            return std::move(childrenQueue);
+        }
+
+        std::vector<std::istringstream> getALine() {
+            std::string inputLine{};
+            std::getline(std::cin, inputLine);
+            return std::move(spliter(inputLine));
         }
 
         std::string readInput() {

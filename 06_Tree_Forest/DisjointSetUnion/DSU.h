@@ -106,15 +106,15 @@ DSU<T>::Index DSU<T>::find_root_collapse(const T& elem) {
     // IF not found {elem}:
     if (pos == elem_vec.size()) return -1;
     // Find root:
-    Index root = find_root(elem);
+    Index _root = find_root(elem);
     // Collapse:
-    while (root != get_node(pos).parent) {
+    while (_root != get_node(pos).parent) {
         // Get parent index of node[pos]:
         Index parent = get_node(pos).parent;
         // Change node[pos]'s parent to {root}:
-        get_node(pos).parent = root;
+        get_node(pos).parent = _root;
         // Iterate to node[pos]'s parent, i.e., node[parent].
         pos = parent;
     }
-    return root;
+    return _root;
 }

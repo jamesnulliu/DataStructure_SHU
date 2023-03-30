@@ -9,6 +9,5 @@ using namespace std;
 
 int main()
 {
-    Tree<char> tree;
-    tree.build();
+    printf("adf %d", 1);
 }

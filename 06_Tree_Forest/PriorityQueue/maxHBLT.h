@@ -20,7 +20,7 @@ public:
     void pop();
     static void postOrder(void(*theVisit)(binaryTreeNode<std::pair<int, T>>*))
     {
-        visit = theVisit; postOrder(root);
+        visit = theVisit; postOrder(_root);
     }
 private:
     /**
@@ -33,10 +33,10 @@ private:
     static void (*visit)(binaryTreeNode<std::pair<int, T>>* t);
     static void dispose(binaryTreeNode<std::pair<int, T>>* t) { delete t; }
 private:
-    static void postOrder(binaryTreeNode<std::pair<int, T>>* root);
+    static void postOrder(binaryTreeNode<std::pair<int, T>>* _root);
 private:
     int& treeSize = linkedBinaryTree<T>::treeSize;
-    binaryTreeNode<std::pair<int, T>>* root;
+    binaryTreeNode<std::pair<int, T>>* _root;
 };
 
 template<class T>
@@ -56,7 +56,7 @@ void maxHBLT<T>::initialize(T* theElement, int theSize)
         q.push(b);
     }
     if (theSize > 0) {
-        root = q.front;
+        _root = q.front;
     }
     treeSize = theSize;
 }
@@ -64,9 +64,9 @@ void maxHBLT<T>::initialize(T* theElement, int theSize)
 template<class T>
 void maxHBLT<T>::meld(maxHBLT<T>& theHblt)
 {
-    m_meld(root, theHblt.root);
+    m_meld(_root, theHblt._root);
     treeSize += theHblt.treeSize;
-    theHblt.root = nullptr;
+    theHblt._root = nullptr;
     theHblt.size = 0;
 }
 
@@ -127,29 +127,29 @@ void maxHBLT<T>::push(const T& theElement)
 {
     binaryTreeNode<std::pair<int, T>>* q =
         new binaryTreeNode<std::pair<int, T>>(std::pair<int, T>(1, theElement));
-    meld(root, q);
+    meld(_root, q);
     treeSize++;
 }
 
 template<class T>
 void maxHBLT<T>::pop()
 {
-    if (root == nullptr) {
+    if (_root == nullptr) {
         throw queueEmpty();
     }
-    binaryTreeNode<std::pair<int, T>>* left = root->leftChild;
-    binaryTreeNode<std::pair<int, T>>* right = root->rightChild;
-    delete root;
-    root = left;
-    meld(root, right);
+    binaryTreeNode<std::pair<int, T>>* left = _root->leftChild;
+    binaryTreeNode<std::pair<int, T>>* right = _root->rightChild;
+    delete _root;
+    _root = left;
+    meld(_root, right);
     treeSize--;
 }
 
 template<class T>
-void maxHBLT<T>::postOrder(binaryTreeNode<std::pair<int, T>>* root)
+void maxHBLT<T>::postOrder(binaryTreeNode<std::pair<int, T>>* _root)
 {
-    if (root == nullptr) return;
-    postOrder(root->leftChild);
-    postOrder(root->rightChild);
-    binaryTreeNode<T>::visit(root);
+    if (_root == nullptr) return;
+    postOrder(_root->leftChild);
+    postOrder(_root->rightChild);
+    binaryTreeNode<T>::visit(_root);
 }

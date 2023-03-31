@@ -6,12 +6,14 @@
 #include <string>
 #include <sstream>
 #include <algorithm>
+#include <memory>
+#include <typeinfo>
 
 template<class _ElemTy>
 struct TreeNode
 {
     _ElemTy data = {};
-    std::vector<TreeNode<_ElemTy>*> children = {};
+    std::vector<std::shared_ptr<TreeNode<_ElemTy>>> children = {};
 };
 
 template<class _ElemTy>
@@ -19,16 +21,26 @@ class Tree
 {
     friend class build_fn;
 public:
-    using Node = TreeNode<_ElemTy>;
+    using bNode = TreeNode<_ElemTy>;
+    using NodePtr = std::shared_ptr<bNode>;
+
 private:
-    Node* _root;
+    NodePtr _root;
+
 public:
     Tree() = default;
     Tree(const Tree&) = delete;
+    ~Tree() = default;
+
+    NodePtr& get_root() { return _root; }
+    const NodePtr& get_root() const { return const_cast<Tree<_ElemTy>*>(this)->get_root(); }
+
+public:
+
     /**
      * @brief Build tree with input, check following example.
      * @examp ------------------------------------------------------
-     * | $INPUT 1$         | $INPUT 2$         | $VISUALIZE$       |
+     * | $INPUT 1          | $INPUT 2          | $VISUALIZE$       |
      * | >>>      [a]      | >>> [a]           |        a (root)   |
      * | >>>   [b    c  d] | >>> [b c d]       |     +--+--+       |
      * | >>> [e  f] [] [g] | >>> [e f] [] [g]  |     b  c  d       |
@@ -41,79 +53,79 @@ public:
     class build_fn
     {
     private:
-        Node** _rRoot;
-        // std::deque<std::istringstream> inputQueue = {};
+        NodePtr* _rRoot;  // Pointer to Tree::_root
+
     public:
         build_fn(Tree<_ElemTy>& tree) : _rRoot(&(tree._root)) {}
+
         void operator()() {
-            std::cout << "[Tree] Tree Building start: " << std::endl;
-            auto inputQueue = std::move(getALine());
-            _ElemTy data{};                 // Create a data with default constructor
-            inputQueue.front() >> data;  // Input the only value (root is a single node, having no siblings)
-            *_rRoot = new Node{ data };     // Create {root}
+            printf("$ Tree: Tree building start\n$ Please enter the nodes:\n$ ");
+
+            // Build root: @{
+            _ElemTy data{};                          // Create a data with default constructor
+            getline_split().front() >> data;         // Input the only value (root is a single node, having no siblings)
+            *_rRoot = std::make_shared<bNode>(data);  // Create {root}
+            // @}
+
+            // Build other nodes:
             build_bfs();
+            printf("Tree: Tree building ends.\n");
         }
+
     private:
         // @brief Split a string to several istringstreams by detecting '[' and ']'.
         std::vector<std::istringstream> spliter(const std::string& str) {
             std::vector<std::istringstream> istreamQueue{};
             std::string tempStr{};
-            for (auto ch : str) {
+            for (auto ch : str) {  // Split {str}
                 switch (ch) {
                 case '[': { tempStr.clear(); break; }
-                case ']': { 
-                    std::istringstream istr(str);
-                    istreamQueue.push_back(istr); 
-                    break; 
-                }
+                case ']': { istreamQueue.emplace_back(tempStr); break; }
                 default: { tempStr += ch; break; }
                 }
             }
-            // [TODO] Should I add EOF to the end?
-            return std::move(istreamQueue);
+            return istreamQueue;
         }
 
-        std::vector<std::istringstream> getALine() {
+        // @brief Get a line from console input, and return a vector of splited istringstreams.
+        std::vector<std::istringstream> getline_split() {
             std::string inputLine{};
             std::getline(std::cin, inputLine);
-            return std::move(spliter(inputLine));
+            printf("$ ");
+            return spliter(inputLine);
         }
 
-        /**
-         * @brief Make a sequence of (Node*)children with input stream.
-         * 
-         * @param istr Input stream, consisting of rear strings saperated with whitespaces.
-         * @return std::vector<Node*>
-         */
-        std::vector<Node*> makeChildren(std::istringstream& istr) {
+        // @brief Make a sequence of (Node*)children with input stream.
+        // @param istr Input stream, consisting of rear strings saperated with whitespaces.
+        std::vector<NodePtr> makeChildren(std::istringstream& istr) {
             _ElemTy data{};
-            std::vector<Node*> ret;
-            while(istr.good()){                          // Keep reading from input stream
-                istr >> data;                            // Input an element
-                ret.push_back((Node*)(new Node{data}));  // Create and push back a new node to vector
+            std::vector<NodePtr> ret;
+            while (istr.good()) {                    // Keep reading from input stream until there is nothing
+                istr >> data;                        // Input an element
+                ret.emplace_back(new bNode{ data });  // Create and push back a new node to vector
             }
-            return std::move(ret);
+            return ret;
         }
 
-        void build_bfs(){
-            std::queue<Node*> parentQueue;  // A queue to store the parents waiting for construction
-            parentQueue.push(*_rRoot);      // Push {root} to queue as the next step is to build it's children
+        void build_bfs() {
+            std::queue<NodePtr> parentQueue;  // The main queue for BFS, to store the parents waiting for construction
+            parentQueue.push(*_rRoot);        // Push {_root} to queue as the next step is to build it's children
 
             while (!parentQueue.empty()) {
-                auto inputQueue = std::move(getALine());
+                std::vector<std::istringstream> inputQueue = std::move(getline_split());
                 for (auto& istr : inputQueue) {
-                    Node* current = parentQueue.front();  // Get queue front
-                    parentQueue.pop();                    // Pop queue
-                    if(istr.str().empty()){ continue; }
-                    current->children = std::move(makeChildren(istr)); // Update {current->children}
-                    for(auto child: current->children) {
-                        parentQueue.push(child);  // Push all children to {parentQueue}
+                    NodePtr current = parentQueue.front();              // Get queue front
+                    parentQueue.pop();                                  // Pop queue
+                    if (istr.str().empty()) { continue; }
+                    current->children = std::move(makeChildren(istr));  // Update {current->children}
+                    for (auto child : current->children) {              // Push all children to {parentQueue}
+                        parentQueue.push(child);
                     }
                 }
             }
-
         }
     };
+
 public:
     build_fn build{ *this };
 };

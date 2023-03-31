@@ -18,6 +18,8 @@ public:
     T& get(int row, int col); // non-const version
     const T& get(int row, int col) const; // const version
     void set(int row, int col, const T& val);
+    SparseMatrix<T>& operator+(const SparseMatrix<T>& mat);
+    const SparseMatrix<T>& operator+(const SparseMatrix<T>& mat) const;
 protected:
     // data members
     std::vector<MatrixTerms<T>> terms; // non-zero elements
@@ -63,9 +65,23 @@ void SparseMatrix<T>::set(int row, int col, const T& val) {
     }
     int index = 0;
     for (; index < terms.size() && (terms[index].row < row || terms[index].row == row && terms[index].col < col); index++);
+    // If mat[row][col] ¡Ù 0
     if (index == terms.size() && terms[index].row == row && terms[index].col == col) {
+        // If val = 0, remove terms[index]. Otherwise,  val
         if (val == 0) {
+            std::copy(terms.begin() + index + 1, terms.end(), terms.begin() + index);
+            terms.pop_back();
+        } else {
+            terms[index].val = val
+        }
+    } else {
+        if (val != 0) {
+            terms
         }
     }
-    return 0;
+}
+
+template<class T>
+SparseMatrix<T>& SparseMatrix<T>::operator+(const SparseMatrix<T>& mat) {
+    for (int i = 0; i < )
 }

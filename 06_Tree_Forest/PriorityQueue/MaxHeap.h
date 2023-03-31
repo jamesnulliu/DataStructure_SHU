@@ -156,10 +156,10 @@ void maxHeap<T>::initialize(T* theHeap, int theSize)
     heapSize = theSize; // Set the "heapSize".
 
     // 'root' would iterates from {heapSize/2 (parent of the last element)} and keep decreasing until reaches real root.
-    for (int root = heapSize / 2; root >= 1; root--) {
+    for (int _root = heapSize / 2; _root >= 1; _root--) {
         // Pick up the current element of 'root'.
-        T rootElement = heap[root];
-        int child = 2 * root;
+        T rootElement = heap[_root];
+        int child = 2 * _root;
         // 'child' iterates from the child of current root to end, but cannot be larger than 'heapSize'.
         for (; child <= heapSize; child *= 2) {
             // Ensure 'heap[child]' is the larger one between the siblings.

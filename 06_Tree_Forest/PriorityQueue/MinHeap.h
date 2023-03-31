@@ -102,10 +102,10 @@ void minHeap<T>::initialize(T* theHeap, int theSize) {
         changeLength1D(heap, capacity, capacity = heapSize);
     }
     // 'root' would iterates from 'heapSize' / 2 and keep decreasing until reaches real root.
-    for (int root = heapSize / 2; root >= 1; root--) {
+    for (int _root = heapSize / 2; _root >= 1; _root--) {
         // Pick up the current element of 'root'.
-        T rootElement = heap[root];
-        int child = 2 * root;
+        T rootElement = heap[_root];
+        int child = 2 * _root;
         // 'child' iterates from the child of current root, but cannot be larger than 'heapSize'.
         for (; child < heapSize; child *= 2) {
             // Ensure 'heap[child]' the larger one among the brothers.
@@ -118,7 +118,7 @@ void minHeap<T>::initialize(T* theHeap, int theSize) {
             }
             // IF: "rootElement" cannot be put in "heap[child/2]".
             // Move 'heap[child]' to 'heap[root]'.
-            heap[root] = heap[child];
+            heap[_root] = heap[child];
             // Re-allocate the next level to 'child'.
             child *= 2;
         }

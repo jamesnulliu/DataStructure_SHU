@@ -6,7 +6,7 @@
 #include <vector>
 
 template<class T>
-struct Node
+struct bNode
 {
     using Index = long long;
     T data;
@@ -23,9 +23,9 @@ public:
     virtual ~DSU() {}
 
     // @brief Get the elem of index {pos}.
-    Node<T>& get_node(Index pos) { return *(elem_vec.begin() + pos); }
+    bNode<T>& get_node(Index pos) { return *(elem_vec.begin() + pos); }
     // @brief Get the elem of index {pos}.
-    const Node<T>& get_node(Index pos) const { return get_node(pos); }
+    const bNode<T>& get_node(Index pos) const { return get_node(pos); }
     // @brief Return the position(index) of element {elem}.
     Index find(const T& elem) const;
     // @brief Find the root of {elem}'s equiv class. Returns {-1} if {elem} not exisits.
@@ -38,7 +38,7 @@ public:
     bool whe_equiv(const T& a, const T& b) const;
 
 protected:
-    std::vector<Node<T>> elem_vec;
+    std::vector<bNode<T>> elem_vec;
 };
 
 template <class T>
@@ -55,7 +55,7 @@ DSU<T>::DSU(std::initializer_list<T> list) {
 
 template<class T>
 DSU<T>::Index DSU<T>::find(const T& elem) const {
-    auto it = std::ranges::find(elem_vec, elem, &Node<T>::data);
+    auto it = std::ranges::find(elem_vec, elem, &bNode<T>::data);
     Index res = first - elem_vec.begin();
     return res;
 }
@@ -106,15 +106,15 @@ DSU<T>::Index DSU<T>::find_root_collapse(const T& elem) {
     // IF not found {elem}:
     if (pos == elem_vec.size()) return -1;
     // Find root:
-    Index root = find_root(elem);
+    Index _root = find_root(elem);
     // Collapse:
-    while (root != get_node(pos).parent) {
+    while (_root != get_node(pos).parent) {
         // Get parent index of node[pos]:
         Index parent = get_node(pos).parent;
         // Change node[pos]'s parent to {root}:
-        get_node(pos).parent = root;
+        get_node(pos).parent = _root;
         // Iterate to node[pos]'s parent, i.e., node[parent].
         pos = parent;
     }
-    return root;
+    return _root;
 }

@@ -1,7 +1,9 @@
 # 图(Graph)
+>
 > P210  
 
 ## I 定义
+
 $$
 \text{Graph}=(V,E)
 $$
@@ -25,10 +27,12 @@ $\text{Path}(v,w)$ 表示从顶点 $v$ 到顶点 $w$ 的一条单向通路, 它�
 > P211  
 
 对图进行一些限制:
+
 1. 图中不能有自身环
 2. 两个顶点之间相关联的边不能多余一条.
 
 ## II 术语
+
 > P212  
 
 1. **完全图(complete graph)**  
@@ -111,13 +115,13 @@ $\text{Path}(v,w)$ 表示从顶点 $v$ 到顶点 $w$ 的一条单向通路, 它�
 $$
 \text{Arcs}[i][j]=
 \begin{cases}
-1, & \text{if } \langle i,j \rangle \in E \text{ or } (i,j) \in E  \\ 
+1, & \text{if } \langle i,j \rangle \in E \text{ or } (i,j) \in E  \\
 0, & \text{otherwise}
 \end{cases}
 $$
 下图给出了无向图和有向图邻接矩阵的示例:
 
-![Graph_01](https://github.com/jamesnulliu/DataStructure_SHU/blob/main/07_Graph/img/Graph_01.png?raw=true)
+![Graph_01](https://img1.imgtp.com/2023/04/03/MeFmZy3L.png)
 
 从上图可以发现, 无向图的邻接矩阵一定是对称矩阵, 顶点 $v_i$ 的度就是第 $i$ 行或第 $j$ 列累加之和, 即:
 $$
@@ -132,3 +136,39 @@ $$
 $$
 \text{OD}(v_i)=\sum_{j=0}^{n-1}\text{Arcs}[i][j]
 $$
+有向图的不连接用无穷表示!
+
+### 2 邻接表 (Adjacent List)
+邻接表是邻接矩阵的改进。当图中的边数很少时，邻接矩阵中会出现大量的零元素，
+为了存储这些零元素，将耗费大量的存储空间。为此，可以把邻接矩阵的每一行改为一
+个单链表。
+
+![Graph_02](https://img1.imgtp.com/2023/04/03/xI1hTRGl.png)
+![Graph_03](https://img1.imgtp.com/2023/04/03/EHZCkoMJ.png)
+
+需要注意的是, **有向图的邻接表**连出的边表示的是出度, 而**逆连接表**表示的是入度.
+
+### 3 邻接多重表
+在无向图的邻接多重表中, 图的每一条边用一个边结点表示, 它由六个域组成:
+
+- `tag` 是标记域, 标记该边是否被处理或被搜索过;
+- `weight` 为边的信息域, 用于存储边的权值;
+- `adjvert1` 和 `adjvert2` 是顶点域, 表示该边所依附的两个顶点在图中的序号;
+- `nextarcl` 是边指针, 指向下一条依附于顶点 `adjvert1` 的边;
+- `nextarc2` 也是边指针, 指向下一条依附于顶点 `adjvert2` 的边;
+
+对图中的每一个顶点用一个顶点结点表示, 它有两个域组成: 
+
+- `data` 域存储有关顶点的信息;
+- `firstarc` 域是链接指针, 指向第一条依附于该顶点的边;
+
+所有的顶点结点组成一个顺序表。
+
+![Graph_04](https://img1.imgtp.com/2023/04/03/JuL0zhOi.png)
+
+### 4 十字链表
+十字链表是**有向图**的一种链式存储结构.
+十字链表把两个合有向图的邻接表和逆邻接表合二为一，用**有向图的邻接多重表**（通常称为十字链表）表示.
+
+![Graph_05](https://img1.imgtp.com/2023/04/03/kJaNzM8P.png)
+

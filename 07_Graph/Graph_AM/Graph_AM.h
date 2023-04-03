@@ -52,17 +52,13 @@ public: // Constructor and Destructor
     ~Graph_AM() = default;
 
 private:
-    constexpr bool indexValid(index i) const
-    {
-        return i >= 0 && i < _vertNum;
-    }
+    constexpr bool is_validIndex(index i) const { return i >= 0 && i < _vertNum; }
 
 public:
     constexpr virtual bool empty_vert() const { return _vertNum == 0; }
     constexpr virtual bool full_vert() const { return _vertNum >= _capacity_vert; }
     constexpr virtual bool get_vertNum() const { return _vertNum; }
 
-public: // Virtual Methods Inherited from Base Class <Graph.h>
     constexpr index get_vertIndex(const VertTy& v) const;
     constexpr sizet get_edgeNum(const VertTy& v) const;
     void insertVertex(const VertTy& v);
@@ -77,6 +73,9 @@ public: // Virtual Methods Inherited from Base Class <Graph.h>
     const VertTy& get_firstAdjVert(const VertTy& v) const;
     VertTy& get_nextAdjVert(const VertTy& va, const VertTy& vb);
     const VertTy& get_nextAdjVert(const VertTy& va, const VertTy& vb) const;
+
+public:
+    const WeightTy& get_weight_loc(index row, index col) const { return _arcMat[row][col]; }
 
 public:
     void print_adjacencyMatrix();
@@ -129,7 +128,7 @@ void Graph_AM<VertTy, WeightTy, UNLINK>::insertArc(const VertTy& va, const VertT
 {
     index vaI = get_vertIndex(va);
     index vbI = get_vertIndex(vb);
-    if (!indexValid(vaI) || !indexValid(vbI) || vaI == vbI)
+    if (!is_validIndex(vaI) || !is_validIndex(vbI) || vaI == vbI)
     {
         return;
     }
@@ -142,7 +141,7 @@ void Graph_AM<VertTy, WeightTy, UNLINK>::insertEdge(const VertTy& va, const Vert
 {
     index vaI = get_vertIndex(va);
     index vbI = get_vertIndex(vb);
-    if (!indexValid(vaI) || !indexValid(vbI) || vaI == vbI)
+    if (!is_validIndex(vaI) || !is_validIndex(vbI) || vaI == vbI)
     {
         return;
     }
@@ -154,7 +153,7 @@ template <class VertTy, class WeightTy, WeightTy UNLINK>
 void Graph_AM<VertTy, WeightTy, UNLINK>::eraseVertex(const VertTy& v)
 {
     index vI = get_vertIndex(v);
-    if (!indexValid(vI))
+    if (!is_validIndex(vI))
         return;
     _vertVec.erase(_vertVec.begin() + vI);
     _arcMat.erase(_arcMat.begin() + vI);
@@ -170,7 +169,7 @@ void Graph_AM<VertTy, WeightTy, UNLINK>::eraseArc(const VertTy& va, const VertTy
 {
     index vaI = get_vertIndex(va);
     index vbI = get_vertIndex(vb);
-    if (!indexValid(vaI) || !indexValid(vbI) || vaI == vbI)
+    if (!is_validIndex(vaI) || !is_validIndex(vbI) || vaI == vbI)
         return;
     _arcMat[vaI][vbI] = UNLINK;
 }
@@ -180,7 +179,7 @@ void Graph_AM<VertTy, WeightTy, UNLINK>::eraseEdge(const VertTy& va, const VertT
 {
     index vaI = get_vertIndex(va);
     index vbI = get_vertIndex(vb);
-    if (!indexValid(vaI) || !indexValid(vbI) || vaI == vbI)
+    if (!is_validIndex(vaI) || !is_validIndex(vbI) || vaI == vbI)
         return;
     // Erase both arcs:
     _arcMat[vaI][vbI] = _arcMat[vbI][vaI] = UNLINK;
@@ -198,7 +197,7 @@ const WeightTy& Graph_AM<VertTy, WeightTy, UNLINK>::get_weight(const VertTy& va,
 {
     index vaI = get_vertIndex(va);
     index vbI = get_vertIndex(vb);
-    if (!indexValid(vaI) || !indexValid(vbI))
+    if (!is_validIndex(vaI) || !is_validIndex(vbI))
     {
         throw "[Failed] Vertex Not Found!";
     }
@@ -216,7 +215,7 @@ template <class VertTy, class WeightTy, WeightTy UNLINK>
 const VertTy& Graph_AM<VertTy, WeightTy, UNLINK>::get_firstAdjVert(const VertTy& v) const
 {
     index vI = this->get_vertIndex(v);
-    if (!indexValid(vI))
+    if (!is_validIndex(vI))
     {
         throw "[Failed] Vertex Not Found!";
     }
@@ -244,7 +243,7 @@ Graph_AM<VertTy, WeightTy, UNLINK>::get_nextAdjVert(const VertTy& va, const Vert
 {
     index vaI = this->get_vertIndex(va);
     index vbI = this->get_vertIndex(vb);
-    if (!indexValid(vaI) || !indexValid(vbI))
+    if (!is_validIndex(vaI) || !is_validIndex(vbI))
     {
         throw "[Failed] Vertex Not Found!";
     }

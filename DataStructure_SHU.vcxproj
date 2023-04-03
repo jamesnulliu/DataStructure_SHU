@@ -167,6 +167,7 @@
     <ClInclude Include="06_Tree_Forest\ArrayBinaryTree\ArrayBinaryTree.h" />
     <ClInclude Include="06_Tree_Forest\ArrayBinaryTree\BInaryTree.h" />
     <ClInclude Include="06_Tree_Forest\DisjointSetUnion\DSU.h" />
+    <ClInclude Include="06_Tree_Forest\Forest\Forest.h" />
     <ClInclude Include="06_Tree_Forest\Forest\Tree.h" />
     <ClInclude Include="06_Tree_Forest\Forest\Tree_binary.h" />
     <ClInclude Include="06_Tree_Forest\LinkedBinaryTree\BInaryTree.h" />
@@ -203,6 +204,7 @@
     <ClCompile Include="06_Tree_Forest\Forest\gangs.cpp" />
     <ClCompile Include="07_Graph\Graph_Common\Topological.cpp" />
     <ClCompile Include="07_Graph\MinimumSpanningTree\Kruskal.cpp" />
+    <ClCompile Include="Forest_test.cpp" />
     <ClCompile Include="SkipList_Hash\source\.main.cpp" />
     <ClCompile Include="SkipList_Hash\source\LZW_compression.cpp" />
     <ClCompile Include="SkipList_Hash\source\UselessStringConvert.cpp" />

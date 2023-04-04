@@ -1,6 +1,5 @@
-
-extern void Forest_test();
+#include ".Test/Test.h"
 
 int main() {
-    Forest_test();
+    MinSpanningTree_test();
 }

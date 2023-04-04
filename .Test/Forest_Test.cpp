@@ -1,11 +1,12 @@
+#include "Test.h"
+
 #include <iostream>
-#include "06_Tree_Forest/Forest/Tree.h"
-#include "06_Tree_Forest/Forest/Tree_binary.h"
-#include "06_Tree_Forest/Forest/Forest.h"
+#include "../06_Tree_Forest/Forest/Tree.h"
+#include "../06_Tree_Forest/Forest/Tree_binary.h"
+#include "../06_Tree_Forest/Forest/Forest.h"
 
 using namespace std;
 
-void Forest_test();
 
 void Forest_test()
 {

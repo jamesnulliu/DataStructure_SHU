@@ -182,7 +182,7 @@
     <ClInclude Include="07_Graph\Graph_AM\Graph_AM.h" />
     <ClInclude Include="07_Graph\Graph_Common\Graph.h" />
     <ClInclude Include="07_Graph\Graph_Link\Graph_Link.h" />
-    <ClInclude Include="07_Graph\NetWork\NetWork.h" />
+    <ClInclude Include="07_Graph\MinimumSpanningTree\Kruskal.h" />
     <ClInclude Include="SkipList_Hash\header\ArrayList.h" />
     <ClInclude Include="SkipList_Hash\header\Dictionary.h" />
     <ClInclude Include="SkipList_Hash\header\DIterator.h" />
@@ -196,21 +196,17 @@
     <ClInclude Include="SkipList_Hash\header\SkipList.h" />
     <ClInclude Include="SkipList_Hash\header\SortedArrayList.h" />
     <ClInclude Include="SkipList_Hash\header\SortedChain.h" />
+    <ClInclude Include=".Test\Test.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include=".main.cpp" />
+    <ClCompile Include=".Test\Graph_AM_Test.cpp" />
+    <ClCompile Include=".Test\MinSpanningTree_Test.cpp" />
     <ClCompile Include="05_String_Array_List\String\String.cpp" />
-    <ClCompile Include="06_Tree_Forest\Forest\foodchain.cpp" />
-    <ClCompile Include="06_Tree_Forest\Forest\gangs.cpp" />
     <ClCompile Include="07_Graph\Graph_Common\Topological.cpp" />
-    <ClCompile Include="07_Graph\MinimumSpanningTree\Kruskal.cpp" />
-    <ClCompile Include="Forest_test.cpp" />
-    <ClCompile Include="SkipList_Hash\source\.main.cpp" />
+    <ClCompile Include=".Test\Forest_Test.cpp" />
     <ClCompile Include="SkipList_Hash\source\LZW_compression.cpp" />
     <ClCompile Include="SkipList_Hash\source\UselessStringConvert.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="06_Tree_Forest\Forest\foodchain.exe" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

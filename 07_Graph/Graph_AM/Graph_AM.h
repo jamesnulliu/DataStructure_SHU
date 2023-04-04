@@ -18,10 +18,10 @@ public:
     constexpr static sizet MAX_VERTEXNUM = 10;
 
 public:
-    sizet _capacity_vert;
-    std::vector<std::vector<WeightTy>> _arcMat;
-    std::vector<VertTy> _vertVec;
-    sizet _vertNum;
+    sizet _capacity_vert;  // Capacity of vertex; If full, expansion takes place automatically
+    std::vector<std::vector<WeightTy>> _arcMat;  // n*n matrix which stores weight of each arc/edge
+    std::vector<VertTy> _vertVec;  // Vector that holds all the vertexes' data (or information)
+    sizet _vertNum;  // Number of current vertexes
 
 public: // Constructor and Destructor
     Graph_AM(sizet vertNum = MAX_VERTEXNUM) :
@@ -41,7 +41,7 @@ public: // Constructor and Destructor
         // Initialize {_vertVec} with {vertList}
         _vertVec(vertList),
         // Set {_vertNum} to 0:
-        _vertNum((sizet)vertList.size())
+        _vertNum((sizet)vertList.size()) 
     {
         // Set all self arc to zero:
         for (index i = 0; i < (index)vertList.size(); ++i)
@@ -55,23 +55,29 @@ private:
     constexpr bool is_validIndex(index i) const { return i >= 0 && i < _vertNum; }
 
 public:
-    constexpr virtual bool empty_vert() const { return _vertNum == 0; }
-    constexpr virtual bool full_vert() const { return _vertNum >= _capacity_vert; }
+    constexpr virtual bool is_emptyVert() const { return _vertNum == 0; }
+    constexpr virtual bool is_fullVert() const { return _vertNum >= _capacity_vert; }
     constexpr virtual bool get_vertNum() const { return _vertNum; }
 
     constexpr index get_vertIndex(const VertTy& v) const;
     constexpr sizet get_edgeNum(const VertTy& v) const;
+    constexpr WeightTy& get_weight(const VertTy& v1, const VertTy& v2);
+    constexpr const WeightTy& get_weight(const VertTy& v1, const VertTy& v2) const;
+
     void insertVertex(const VertTy& v);
     void insertArc(const VertTy& va, const VertTy& vb, const WeightTy& weight = 1);
     void insertEdge(const VertTy& va, const VertTy& vb, const WeightTy& weight = 1);
     void eraseVertex(const VertTy& v);
     void eraseArc(const VertTy& va, const VertTy& vb);
     void eraseEdge(const VertTy& va, const VertTy& vb);
-    WeightTy& get_weight(const VertTy& v1, const VertTy& v2);
-    const WeightTy& get_weight(const VertTy& v1, const VertTy& v2) const;
+
+    // @brief [Deprecated] Get the first adjacent vertex of {v}.
     VertTy& get_firstAdjVert(const VertTy& v);
+    // @brief [Deprecated] Get the first adjacent vertex of {v}.
     const VertTy& get_firstAdjVert(const VertTy& v) const;
+    // @brief [Deprecated] Get an adjacent vertex of {va} which is next to {vb}.
     VertTy& get_nextAdjVert(const VertTy& va, const VertTy& vb);
+    // @brief [Deprecated] Get an adjacent vertex of {va} which is next to {vb}.
     const VertTy& get_nextAdjVert(const VertTy& va, const VertTy& vb) const;
 
 public:
@@ -108,7 +114,7 @@ Graph_AM<VertTy, WeightTy, UNLINK>::get_edgeNum(const VertTy& v) const
 template <class VertTy, class WeightTy, WeightTy UNLINK>
 inline void Graph_AM<VertTy, WeightTy, UNLINK>::insertVertex(const VertTy& v)
 {
-    if (full_vert())
+    if (is_fullVert())
     {
         _capacity_vert <<= 1;
         _vertVec.resize(_capacity_vert);
@@ -186,14 +192,14 @@ void Graph_AM<VertTy, WeightTy, UNLINK>::eraseEdge(const VertTy& va, const VertT
 }
 
 template <class VertTy, class WeightTy, WeightTy UNLINK>
-WeightTy& Graph_AM<VertTy, WeightTy, UNLINK>::get_weight(const VertTy& va, const VertTy& vb)
+constexpr WeightTy& Graph_AM<VertTy, WeightTy, UNLINK>::get_weight(const VertTy& va, const VertTy& vb)
 {
     auto cThis = const_cast<Graph_AM<VertTy> const*>(this);
     return const_cast<WeightTy&>(cThis->get_weight(va, vb));
 }
 
 template <class VertTy, class WeightTy, WeightTy UNLINK>
-const WeightTy& Graph_AM<VertTy, WeightTy, UNLINK>::get_weight(const VertTy& va, const VertTy& vb) const
+constexpr const WeightTy& Graph_AM<VertTy, WeightTy, UNLINK>::get_weight(const VertTy& va, const VertTy& vb) const
 {
     index vaI = get_vertIndex(va);
     index vbI = get_vertIndex(vb);

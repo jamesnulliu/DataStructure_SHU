@@ -1,4 +1,4 @@
-//myexception.h
+// myexception.h
 // exception classes for various error types
 
 #ifndef myExceptions_

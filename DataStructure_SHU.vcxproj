@@ -137,29 +137,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="03_LinearList\ArrayList\arrayList.h" />
-    <ClInclude Include="03_LinearList\ArrayList\arrayListWithIterator.h" />
-    <ClInclude Include="03_LinearList\ArrayList\changeLength1D.h" />
-    <ClInclude Include="03_LinearList\ArrayList\linearList.h" />
-    <ClInclude Include="03_LinearList\ArrayList\myExceptions.h" />
-    <ClInclude Include="03_LinearList\ChainList\chain.h" />
-    <ClInclude Include="03_LinearList\ChainList\chainNode.h" />
-    <ClInclude Include="03_LinearList\ChainList\chainWithBinSort.h" />
-    <ClInclude Include="03_LinearList\ChainList\chainWithIterator.h" />
-    <ClInclude Include="03_LinearList\ChainList\circularListWithHeader.h" />
-    <ClInclude Include="03_LinearList\ChainList\dChainWithIt.h" />
-    <ClInclude Include="03_LinearList\ChainList\linearList.h" />
-    <ClInclude Include="03_LinearList\ChainList\myExceptions.h" />
-    <ClInclude Include="04_Stack_Queue\Queue\arrayQueue.h" />
-    <ClInclude Include="04_Stack_Queue\Queue\myExceptions.h" />
-    <ClInclude Include="04_Stack_Queue\Queue\queue.h" />
-    <ClInclude Include="04_Stack_Queue\Stack\arrayStack.h" />
-    <ClInclude Include="04_Stack_Queue\Stack\linkedStack.h" />
-    <ClInclude Include="04_Stack_Queue\Stack\myExceptions.h" />
-    <ClInclude Include="04_Stack_Queue\Stack\stack.h" />
     <ClInclude Include="05_String_Array_List\Matrix\myExceptions.h" />
     <ClInclude Include="05_String_Array_List\Matrix\SparseMatrix.h" />
     <ClInclude Include="05_String_Array_List\Matrix\MatrixTerm.h" />
+<<<<<<< HEAD
     <ClInclude Include="05_String_Array_List\String\ChangeLength1D.h" />
     <ClInclude Include="05_String_Array_List\String\KMP.h" />
     <ClInclude Include="05_String_Array_List\String\String.h" />
@@ -198,16 +179,12 @@
     <ClInclude Include="SkipList_Hash\header\SortedArrayList.h" />
     <ClInclude Include="SkipList_Hash\header\SortedChain.h" />
     <ClInclude Include=".Test\Test.h" />
+=======
+>>>>>>> 76f77d988a227410275568c67ffb09465fb71f08
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include=".main.cpp" />
-    <ClCompile Include=".Test\Graph_AM_Test.cpp" />
-    <ClCompile Include=".Test\MinSpanningTree_Test.cpp" />
-    <ClCompile Include="05_String_Array_List\String\String.cpp" />
-    <ClCompile Include="07_Graph\Graph_Common\Topological.cpp" />
-    <ClCompile Include=".Test\Forest_Test.cpp" />
-    <ClCompile Include="SkipList_Hash\source\LZW_compression.cpp" />
-    <ClCompile Include="SkipList_Hash\source\UselessStringConvert.cpp" />
+    <ClCompile Include="05_String_Array_List\Matrix\test.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

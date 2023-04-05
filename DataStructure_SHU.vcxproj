@@ -183,6 +183,7 @@
     <ClInclude Include="07_Graph\Graph_Common\Graph.h" />
     <ClInclude Include="07_Graph\Graph_Link\Graph_Link.h" />
     <ClInclude Include="07_Graph\MinimumSpanningTree\Kruskal.h" />
+    <ClInclude Include="07_Graph\MinimumSpanningTree\Prim.h" />
     <ClInclude Include="SkipList_Hash\header\ArrayList.h" />
     <ClInclude Include="SkipList_Hash\header\Dictionary.h" />
     <ClInclude Include="SkipList_Hash\header\DIterator.h" />

@@ -41,7 +41,7 @@ public: // Constructor and Destructor
         // Initialize {_vertVec} with {vertList}
         _vertVec(vertList),
         // Set {_vertNum} to 0:
-        _vertNum((sizet)vertList.size()) 
+        _vertNum((sizet)vertList.size())
     {
         // Set all self arc to zero:
         for (index i = 0; i < (index)vertList.size(); ++i)
@@ -57,7 +57,7 @@ private:
 public:
     constexpr virtual bool is_emptyVert() const { return _vertNum == 0; }
     constexpr virtual bool is_fullVert() const { return _vertNum >= _capacity_vert; }
-    constexpr virtual bool get_vertNum() const { return _vertNum; }
+    constexpr virtual sizet get_vertNum() const { return _vertNum; }
 
     constexpr index get_vertIndex(const VertTy& v) const;
     constexpr sizet get_edgeNum(const VertTy& v) const;
@@ -295,10 +295,12 @@ void Graph_AM<VertTy, WeightTy, UNLINK>::print_adjacencyMatrix()
             if (i == j)
             {
                 std::cout << "0 ";
-            } else if (_arcMat[i][j] == UNLINK)
+            }
+            else if (_arcMat[i][j] == UNLINK)
             {
                 std::cout << "x ";
-            } else
+            }
+            else
             {
                 std::cout << (std::to_string(_arcMat[i][j]) + " ");
             }

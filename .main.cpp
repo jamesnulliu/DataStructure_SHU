@@ -1,5 +1,5 @@
-void SearchTest();
+#include ".Test/Test.h"
 
 int main() {
-    SearchTest();
+    PatternMatching();
 }

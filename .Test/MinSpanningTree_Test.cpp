@@ -1,9 +1,10 @@
 #include "../07_Graph/MinimumSpanningTree/Kruskal.h"
+#include "../07_Graph/MinimumSpanningTree/Prim.h"
 
 /**
  *       B -------+
  *   34 /          \12
- *     /  19    26  \ 
+ *     /  19    26  \
  *    A ---- F ----- E
  *    |  25 / \     /
  *  46|  +-+   |   /38
@@ -31,4 +32,5 @@ inline Network createNetWork() {
 
 void MinSpanningTree_test() {
     minSpanTree_Kruskal(createNetWork());
+    MinSpanningTree_Prim(createNetWork(), 0);
 }

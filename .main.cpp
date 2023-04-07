@@ -1,4 +1,4 @@
-#include ".Test/Test.h"
+void PatternMatching();
 
 int main() {
     PatternMatching();

@@ -186,7 +186,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include=".main.cpp" />
-    <ClCompile Include=".Test\MinSpanningTree_Test.cpp" />
     <ClCompile Include="05_String_Array_List\Matrix\test.cpp" />
     <ClCompile Include="05_String_Array_List\String\PatternMatching.cpp" />
     <ClCompile Include="05_String_Array_List\String\String.cpp" />

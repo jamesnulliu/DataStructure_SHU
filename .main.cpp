@@ -1,5 +1,5 @@
-void PatternMatching();
+void SearchTest();
 
 int main() {
-    PatternMatching();
+    SearchTest();
 }

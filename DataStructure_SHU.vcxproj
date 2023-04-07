@@ -151,7 +151,7 @@
     <ClInclude Include="06_Tree_Forest\Forest\Forest.h" />
     <ClInclude Include="06_Tree_Forest\Forest\Tree.h" />
     <ClInclude Include="06_Tree_Forest\Forest\Tree_binary.h" />
-    <ClInclude Include="06_Tree_Forest\LinkedBinaryTree\BInaryTree.h" />
+    <ClInclude Include="06_Tree_Forest\LinkedBinaryTree\BinaryTree.h" />
     <ClInclude Include="06_Tree_Forest\LinkedBinaryTree\BinaryTreeNode.h" />
     <ClInclude Include="06_Tree_Forest\LinkedBinaryTree\LinkedBinaryTree.h" />
     <ClInclude Include="06_Tree_Forest\PriorityQueue\maxHBLT.h" />
@@ -165,6 +165,10 @@
     <ClInclude Include="07_Graph\Graph_Link\Graph_Link.h" />
     <ClInclude Include="07_Graph\MinimumSpanningTree\Kruskal.h" />
     <ClInclude Include="07_Graph\MinimumSpanningTree\Prim.h" />
+    <ClInclude Include="08_Search\BinarySearch.h" />
+    <ClInclude Include="08_Search\BinarySearchTree.h" />
+    <ClInclude Include="08_Search\BinaryTreeNode.h" />
+    <ClInclude Include="08_Search\LinearSearch.h" />
     <ClInclude Include="SkipList_Hash\header\ArrayList.h" />
     <ClInclude Include="SkipList_Hash\header\Dictionary.h" />
     <ClInclude Include="SkipList_Hash\header\DIterator.h" />
@@ -185,6 +189,7 @@
     <ClCompile Include="05_String_Array_List\Matrix\test.cpp" />
     <ClCompile Include="05_String_Array_List\String\PatternMatching.cpp" />
     <ClCompile Include="05_String_Array_List\String\String.cpp" />
+    <ClCompile Include="08_Search\SearchTest.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

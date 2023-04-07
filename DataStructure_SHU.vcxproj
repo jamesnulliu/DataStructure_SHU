@@ -140,6 +140,7 @@
     <ClInclude Include="05_String_Array_List\Matrix\myExceptions.h" />
     <ClInclude Include="05_String_Array_List\Matrix\SparseMatrix.h" />
     <ClInclude Include="05_String_Array_List\Matrix\MatrixTerm.h" />
+    <ClInclude Include="05_String_Array_List\String\BruteForce.h" />
     <ClInclude Include="05_String_Array_List\String\ChangeLength1D.h" />
     <ClInclude Include="05_String_Array_List\String\KMP.h" />
     <ClInclude Include="05_String_Array_List\String\String.h" />
@@ -183,6 +184,8 @@
     <ClCompile Include=".main.cpp" />
     <ClCompile Include=".Test\MinSpanningTree_Test.cpp" />
     <ClCompile Include="05_String_Array_List\Matrix\test.cpp" />
+    <ClCompile Include="05_String_Array_List\String\PatternMatching.cpp" />
+    <ClCompile Include="05_String_Array_List\String\String.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

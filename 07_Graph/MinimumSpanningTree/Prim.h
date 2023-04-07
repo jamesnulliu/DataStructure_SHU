@@ -24,8 +24,6 @@ struct PrimEdge
     index vertFromI;
     index vertToI;
 };
+std::unordered_map<VertTy, _CloseArc> closeArcs;
 
-    std::unordered_map<VertTy, _CloseArc> closeArcs;
-
-    // Step 1. Initialize {closeArcs}
-}
+// Step 1. Initialize {closeArcs}

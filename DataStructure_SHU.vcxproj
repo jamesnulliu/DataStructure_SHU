@@ -140,6 +140,7 @@
     <ClInclude Include="05_String_Array_List\Matrix\myExceptions.h" />
     <ClInclude Include="05_String_Array_List\Matrix\SparseMatrix.h" />
     <ClInclude Include="05_String_Array_List\Matrix\MatrixTerm.h" />
+    <ClInclude Include="05_String_Array_List\String\BruteForce.h" />
     <ClInclude Include="05_String_Array_List\String\ChangeLength1D.h" />
     <ClInclude Include="05_String_Array_List\String\KMP.h" />
     <ClInclude Include="05_String_Array_List\String\String.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="07_Graph\Graph_Link\Graph_Link.h" />
     <ClInclude Include="07_Graph\MinimumSpanningTree\Kruskal.h" />
     <ClInclude Include="07_Graph\MinimumSpanningTree\Prim.h" />
+    <ClInclude Include="07_Graph\ShortestPath\Dijkstra.h" />
     <ClInclude Include="SkipList_Hash\header\ArrayList.h" />
     <ClInclude Include="SkipList_Hash\header\Dictionary.h" />
     <ClInclude Include="SkipList_Hash\header\DIterator.h" />
@@ -177,11 +179,14 @@
     <ClInclude Include="SkipList_Hash\header\SkipList.h" />
     <ClInclude Include="SkipList_Hash\header\SortedArrayList.h" />
     <ClInclude Include="SkipList_Hash\header\SortedChain.h" />
-    <ClInclude Include=".Test\Test.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include=".main.cpp" />
+    <ClCompile Include=".Test\ShortestPath.cpp" />
     <ClCompile Include="05_String_Array_List\Matrix\test.cpp" />
+    <ClCompile Include="05_String_Array_List\String\PatternMatching.cpp" />
+    <ClCompile Include="05_String_Array_List\String\String.cpp" />
+    <ClCompile Include="07_Graph\ShortestPath\Dijkstra.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

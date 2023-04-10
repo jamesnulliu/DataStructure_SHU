@@ -1,7 +1,5 @@
-#include "05_String_Array_List/Matrix/SparseMatrix.h"
-
-void sparseMatrixTest();
+#include ".Test/Test.h"
 
 int main() {
-    sparseMatrixTest();
+    MinSpanningTree_test();
 }

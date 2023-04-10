@@ -140,7 +140,6 @@
     <ClInclude Include="05_String_Array_List\Matrix\myExceptions.h" />
     <ClInclude Include="05_String_Array_List\Matrix\SparseMatrix.h" />
     <ClInclude Include="05_String_Array_List\Matrix\MatrixTerm.h" />
-<<<<<<< HEAD
     <ClInclude Include="05_String_Array_List\String\ChangeLength1D.h" />
     <ClInclude Include="05_String_Array_List\String\KMP.h" />
     <ClInclude Include="05_String_Array_List\String\String.h" />
@@ -179,8 +178,6 @@
     <ClInclude Include="SkipList_Hash\header\SortedArrayList.h" />
     <ClInclude Include="SkipList_Hash\header\SortedChain.h" />
     <ClInclude Include=".Test\Test.h" />
-=======
->>>>>>> 76f77d988a227410275568c67ffb09465fb71f08
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include=".main.cpp" />

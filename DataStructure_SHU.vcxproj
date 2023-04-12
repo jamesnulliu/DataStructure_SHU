@@ -163,6 +163,8 @@
     <ClInclude Include="07_Graph\Graph_AM\Graph_AM.h" />
     <ClInclude Include="07_Graph\Graph_Common\Graph.h" />
     <ClInclude Include="07_Graph\Graph_Link\Graph_Link.h" />
+    <ClInclude Include="07_Graph\Graph_OrthogonalList\GOL_Arc.h" />
+    <ClInclude Include="07_Graph\Graph_OrthogonalList\Graph_OrthogonalList.h" />
     <ClInclude Include="07_Graph\MinimumSpanningTree\Kruskal.h" />
     <ClInclude Include="07_Graph\MinimumSpanningTree\Prim.h" />
     <ClInclude Include="07_Graph\ShortestPath\Dijkstra.h" />
@@ -182,11 +184,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include=".main.cpp" />
+    <ClCompile Include=".Test\graph_orthogonalList.cpp" />
     <ClCompile Include=".Test\ShortestPath.cpp" />
     <ClCompile Include="05_String_Array_List\Matrix\test.cpp" />
     <ClCompile Include="05_String_Array_List\String\PatternMatching.cpp" />
     <ClCompile Include="05_String_Array_List\String\String.cpp" />
-    <ClCompile Include="07_Graph\ShortestPath\Dijkstra.cpp" />
+    <ClCompile Include="07_Graph\Graph_Common\Topological.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

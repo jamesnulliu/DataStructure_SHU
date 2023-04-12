@@ -1,5 +1,5 @@
-#include ".Test/Test.h"
+void test_gol();
 
 int main() {
-    MinSpanningTree_test();
+    test_gol();
 }

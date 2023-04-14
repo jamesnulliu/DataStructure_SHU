@@ -8,10 +8,10 @@
 using index = long long;
 using sizet = long long;
 
-template<class VertDataTy, class WeightTy, WeightTy INIF>
-auto dijkstra(const Graph_AM<VertDataTy, WeightTy, INIF>& graph, index sourceI) -> std::vector<WeightTy> {
+template<class VertDataTy, class WeightTy, WeightTy INF>
+auto dijkstra(const Graph_AM<VertDataTy, WeightTy, INF>& graph, index sourceI) -> std::vector<WeightTy> {
     // Initialize distances to all nodes as infinity, except for the source node.
-    std::vector<WeightTy> dists(graph._vertVec.size(), INIF);
+    std::vector<WeightTy> dists(graph._vertVec.size(), INF);
     dists[sourceI] = 0;
 
     // Initialize an empty set of visited nodes and a priority queue to keep track of the nodes to visit.
@@ -31,18 +31,21 @@ auto dijkstra(const Graph_AM<VertDataTy, WeightTy, INIF>& graph, index sourceI) 
         que.pop_back();
 
         // If the node has already been visited, skip it:
+        // [O(V) for search]
         if (visited.count(current.first)) {
             continue;
         }
         // Else the node has not, mark it as visited:
+        // [O(V) for insert]
         else {
             visited.insert(current.first);
         }
 
         // Check all neighbor nodes to see if their distances need to be updated:
+        // [O(V) for iteration]
         for (index neighbor = 0; neighbor < graph._vertVec.size(); ++neighbor) {
             if (neighbor == current.first) continue;
-            if (graph._arcMat[current.first][neighbor] == INIF) continue;
+            if (graph._arcMat[current.first][neighbor] == INF) continue;
 
             // Calculate the tentative distance to the neighbor through the current node.
             WeightTy tempDist = dists[current.first] + graph._arcMat[current.first][neighbor];
@@ -56,6 +59,7 @@ auto dijkstra(const Graph_AM<VertDataTy, WeightTy, INIF>& graph, index sourceI) 
                 //        When pop queue, we will get the one with minimum distance, and mark the vertex 'visited';
                 //        So when we get the vertex again, it will be skipped.
                 que.push_back(std::make_pair(neighbor, dists[neighbor]));
+                // [O(logE) for push once]
                 std::ranges::push_heap(que, popMinHeap);
             }
         }

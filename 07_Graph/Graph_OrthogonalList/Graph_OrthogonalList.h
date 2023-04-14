@@ -9,7 +9,8 @@ namespace GOL {
     struct Arc
     {
         using ArcTy = Arc<WeightTy, W_DEFAULT>;
-        using ArcPtr = std::shared_ptr<Arc<WeightTy, W_DEFAULT>>;
+        using ArcPtr = std::shared_ptr<ArcTy>;
+        using const_ArcPtr = std::shared_ptr<const ArcTy>;
         enum class Tag { UNVISITED, VISITED };
 
         Index    srcVertIndex = {};
@@ -26,6 +27,7 @@ namespace GOL {
     public:
         using ArcTy = Arc<WeightTy, W_DEFAULT>::ArcTy;
         using ArcPtr = Arc<WeightTy, W_DEFAULT>::ArcPtr;
+        using const_ArcPtr = ArcTy::const_ArcPtr;
 
         Size vertNum() const { return (Size)_vertice.size(); }
 
@@ -53,8 +55,17 @@ namespace GOL {
         // @brief Get the vertex data by it's index.
         VertDataTy& getVertByIndex(Index vertIndex) { return _vertice[vertIndex].data; }
 
+        // @brief Get the const arc by given indexes; If not found, return nullptr.
+        const_ArcPtr getArcByIndex(Index srcVertIndex, Index dstVertIndex) const;
+
         // @brief Get the arc by given indexes; If not found, return nullptr.
-        ArcPtr getArcByIndex(Index srcVertIndex, Index dstVertIndex) const;
+        ArcPtr getArcByIndex(Index srcVertIndex, Index dstVertIndex);
+
+        // @brief Get a vector of indexes that vertex of each has one arc going out from src vertex.
+        std::vector<Index> getOutIndexes(Index srcVertIndex) const;
+
+        // @brief Get a vector of indexes that vertex of each has one arc coming into src vertex.
+        std::vector<Index> getInIndexes(Index srcVertIndex) const;
 
     private:
         struct VertTy
@@ -64,7 +75,7 @@ namespace GOL {
             ArcPtr firstOut = {};
         };
 
-        bool isValidVertIndex(Index vertIndex) const { return vertIndex >= 0 && vertIndex < _vertice.size(); }
+        bool isValidVertIndex(Index vertIndex) const { return vertIndex >= 0 && vertIndex < (Size)_vertice.size(); }
 
         std::vector<VertTy> _vertice;
     };
@@ -193,8 +204,8 @@ namespace GOL {
     }
 
     template<class VertDataTy, class WeightTy, WeightTy W_DEFAULT>
-    Graph<VertDataTy, WeightTy, W_DEFAULT>::ArcPtr Graph<VertDataTy, WeightTy, W_DEFAULT>::
-        getArcByIndex(Index srcVertIndex, Index dstVertIndex) const
+    Graph<VertDataTy, WeightTy, W_DEFAULT>::const_ArcPtr
+        Graph<VertDataTy, WeightTy, W_DEFAULT>::getArcByIndex(Index srcVertIndex, Index dstVertIndex) const
     {
         // If either index is invalid, return nullptr:
         if (!isValidVertIndex(srcVertIndex) || !isValidVertIndex(dstVertIndex)) { return nullptr; }
@@ -211,12 +222,44 @@ namespace GOL {
             // Current pointint vert:
             const VertTy& tempDst = _vertice[arcIterator->dstVertIndex];
             // If found, return the pointer to current arc:
-            if (tempDst.data == dstVert.data) { return arcIterator; }
+            if (tempDst.data == dstVert.data) {
+                return arcIterator;
+            }
             // Iterator to next arc:
             arcIterator = arcIterator->forward;
         }
 
         // Not found, return nullptr:
         return nullptr;
+    }
+
+    template<class VertDataTy, class WeightTy, WeightTy W_DEFAULT>
+    Graph<VertDataTy, WeightTy, W_DEFAULT>::ArcPtr
+        Graph<VertDataTy, WeightTy, W_DEFAULT>::getArcByIndex(Index srcVertIndex, Index dstVertIndex)
+    {
+        return std::const_pointer_cast<ArcTy>(
+            static_cast<const Graph<VertDataTy, WeightTy, W_DEFAULT>&>(*this)
+            .getArcByIndex(srcVertIndex, dstVertIndex)
+        );
+    }
+
+    template<class VertDataTy, class WeightTy, WeightTy W_DEFAULT>
+    std::vector<Index> Graph<VertDataTy, WeightTy, W_DEFAULT>::getOutIndexes(Index srcVertIndex) const {
+        const VertTy& srcVert = _vertice[srcVertIndex];
+        std::vector<Index> outIndexes;
+        for (ArcPtr iter = srcVert.firstOut; iter != nullptr; iter = iter->forward) {
+            outIndexes.push_back(iter->dstVertIndex);
+        }
+        return outIndexes;
+    }
+
+    template<class VertDataTy, class WeightTy, WeightTy W_DEFAULT>
+    std::vector<Index> Graph<VertDataTy, WeightTy, W_DEFAULT>::getInIndexes(Index dstVertIndex) const {
+        const VertTy& dstVert = _vertice[dstVertIndex];
+        std::vector<Index> inIndexes;
+        for (ArcPtr iter = dstVert.firstIn; iter != nullptr; iter = iter->backward) {
+            inIndexes.push_back(iter->srcVertIndex);
+        }
+        return inIndexes;
     }
 }

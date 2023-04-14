@@ -6,8 +6,8 @@ using namespace std;
 using Index = long long;
 using Sizet = long long;
 
-template<class ElemTy>
-bool topologicalSorting_Kahn(Graph<ElemTy>& graph, queue<ElemTy>& result) {
+template<class VertDataTy>
+bool topologicalSorting_Kahn(Graph<VertDataTy>& graph, queue<VertDataTy>& result) {
     result = {};
     queue<Index> zeroIndegreeVertI_que = {};
     for (Index i = 0; i < graph._vertNum(); ++i) {
@@ -27,8 +27,8 @@ bool topologicalSorting_Kahn(Graph<ElemTy>& graph, queue<ElemTy>& result) {
     else return false;
 }
 
-template<class ElemTy>
-bool topologicalSorting_DFS(Graph<ElemTy>& graph, stack<ElemTy>& result) {
+template<class VertDataTy>
+bool topologicalSorting_DFS(Graph<VertDataTy>& graph, stack<VertDataTy>& result) {
     result = {};
     vector<bool> isAddedToResult(graph._vertNum(), false);
     vector<bool> isUnderRecursion(graph._vertNum(), false);
@@ -44,8 +44,8 @@ bool topologicalSorting_DFS(Graph<ElemTy>& graph, stack<ElemTy>& result) {
     return true;
 }
 
-template<class ElemTy>
-void visit_DFS(Graph<ElemTy>& graph, Index vertI, stack<ElemTy>& result,
+template<class VertDataTy>
+void visit_DFS(Graph<VertDataTy>& graph, Index vertI, stack<VertDataTy>& result,
     vector<bool>& isAddedToResult, vector<bool>& isUnderRecursion) {
     if (isAddedToResult[vertI] == true) return;
     if (isUnderRecursion[vertI] == true) throw 1;

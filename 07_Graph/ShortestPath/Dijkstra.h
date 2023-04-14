@@ -8,8 +8,8 @@
 using index = long long;
 using sizet = long long;
 
-template<class VertTy, class WeightTy, WeightTy INIF>
-auto dijkstra(const Graph_AM<VertTy, WeightTy, INIF>& graph, index sourceI) -> std::vector<WeightTy> {
+template<class VertDataTy, class WeightTy, WeightTy INIF>
+auto dijkstra(const Graph_AM<VertDataTy, WeightTy, INIF>& graph, index sourceI) -> std::vector<WeightTy> {
     // Initialize distances to all nodes as infinity, except for the source node.
     std::vector<WeightTy> dists(graph._vertVec.size(), INIF);
     dists[sourceI] = 0;

@@ -3,9 +3,8 @@
 #include <vector>
 #include <algorithm>
 #include <unordered_map>
-#include <unordered_set>
 
-/** Persudocode for prim algorithm (from GeeksforGeeks)
+/**
  * Step 1: Determine an arbitrary vertex as the starting vertex of the MST.
  * Step 2: Follow steps 3 to 5 till there are vertices that are not included in the MST (known as fringe vertex).
  * Step 3: Find edges connecting any tree vertex with the fringe vertices.

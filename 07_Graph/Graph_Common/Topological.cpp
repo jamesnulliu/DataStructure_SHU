@@ -1,4 +1,5 @@
 #include "Graph.h"
+#include "../Graph_OrthogonalList/Graph_OrthogonalList.h"
 #include <queue>
 #include <stack>
 
@@ -62,23 +63,80 @@ void visit_DFS(Graph<VertDataTy>& graph, Index vertI, stack<VertDataTy>& result,
 #include <iostream>
 
 void solve() {
-    Graph<> g(4);
-    g.setData(0, 'a'); g.setData(1, 'b'); g.setData(2, 'c'); g.setData(3, 'd');
-    g.addEdge(0, 1); g.addEdge(2, 1); g.addEdge(3, 2);  g.addEdge(1, 2);
-    queue<char> result_Kahn;
-    if (topologicalSorting_Kahn(g, result_Kahn) == true) {
-        while (!result_Kahn.empty()) {
-            printf("%c < ", result_Kahn.front());
-            result_Kahn.pop();
+    ////Graph<> g(4);
+    ////g.setData(0, 'a'); g.setData(1, 'b'); g.setData(2, 'c'); g.setData(3, 'd');
+    ////g.addEdge(0, 1); g.addEdge(2, 1); g.addEdge(3, 2);
+    ////queue<char> result_Kahn;
+    ////if (topologicalSorting_Kahn(g, result_Kahn) == true) {
+    ////    while (!result_Kahn.empty()) {
+    ////        printf("%c < ", result_Kahn.front());
+    ////        result_Kahn.pop();
+    ////    }
+    ////    printf("\b\b ");
+    ////} else { puts("Impossible."); }
+    ////stack<char> result_DFS;
+    ////if (topologicalSorting_DFS(g, result_DFS) == true) {
+    ////    while (!result_DFS.empty()) {
+    ////        printf("%c < ", result_DFS.top());
+    ////        result_DFS.pop();
+    ////    }
+    ////    printf("\b\b ");
+    ////} else { puts("Impossible."); }
+}
+
+namespace GOL {
+    void visit_DFS(GOL::Graph<char, int, 0>& graph, Index vertI, stack<char>& result,
+        vector<bool>& isAddedToResult, vector<bool>& isUnderRecursion);
+
+    bool topologicalSorting_DFS(GOL::Graph<char, int, 0>& graph, stack<char>& result) {
+        result = {};
+        vector<bool> isAddedToResult(graph.vertNum(), false);
+        vector<bool> isUnderRecursion(graph.vertNum(), false);
+        try {
+            for (Index i = 0; i < graph.vertNum(); ++i) {
+                if (isAddedToResult[i] == false) {
+                    GOL::visit_DFS(graph, i, result, isAddedToResult, isUnderRecursion);
+                }
+            }
+        } catch (int status) {
+            if (status == 1) { result = {}; return false; }
         }
-        printf("\b\b ");
-    } else { puts("Impossible."); }
+        return true;
+    }
+
+    void visit_DFS(GOL::Graph<char, int, 0>& graph, Index vertI, stack<char>& result,
+        vector<bool>& isAddedToResult, vector<bool>& isUnderRecursion) {
+        if (isAddedToResult[vertI] == true) return;
+        if (isUnderRecursion[vertI] == true) throw 1;
+        isUnderRecursion[vertI] = true;
+        for (Index linkedI : graph.getOutIndexes(vertI)) {
+            visit_DFS(graph, linkedI, result, isAddedToResult, isUnderRecursion);
+        }
+        isUnderRecursion[vertI] = false;
+        result.push(graph.getVertByIndex(vertI));
+        isAddedToResult[vertI] = true;
+    }
+}
+void test_topological() {
+    GOL::Graph<char, int, 0> g;
+    g.insertVert('a');
+    g.insertVert('b');
+    g.insertVert('c');
+    g.insertVert('d');
+
+    g.insertArcByIndex(0, 1, 1);
+    g.insertArcByIndex(2, 1, 1);
+    g.insertArcByIndex(3, 2, 1);
+
     stack<char> result_DFS;
-    if (topologicalSorting_DFS(g, result_DFS) == true) {
+    if (GOL::topologicalSorting_DFS(g, result_DFS) == true) {
         while (!result_DFS.empty()) {
             printf("%c < ", result_DFS.top());
             result_DFS.pop();
         }
         printf("\b\b ");
     } else { puts("Impossible."); }
+}
+
+void printDate() {
 }

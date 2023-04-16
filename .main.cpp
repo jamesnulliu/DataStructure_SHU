@@ -1,5 +1,11 @@
-void test_gol();
+#include <typeinfo>
+#include <iostream>
+
+void test_topological();
+
+void solve();
 
 int main() {
-    test_gol();
+    test_topological();
+    return 0;
 }

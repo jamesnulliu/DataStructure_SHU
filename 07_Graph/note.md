@@ -196,41 +196,53 @@ $$
 
 # VII Dijkstra
 
-```
-function Dijkstra(Graph, source):
-   // Initialize distances to all nodes as infinity, except for the source node.
-   distances = map infinity to all nodes
-   distances = 0
-
-   // Initialize an empty set of visited nodes and a priority queue to keep track of the nodes to visit.
-   visited = empty set
-   queue = new PriorityQueue()
-   queue.enqueue(source, 0)
-
-   // Loop until all nodes have been visited.
-   while queue is not empty:
-       // Dequeue the node with the smallest distance from the priority queue.
-       current = queue.dequeue()
-
-       // If the node has already been visited, skip it.
-       if current in visited:
-           continue
-
-       // Mark the node as visited.
-       visited.add(current)
-
-       // Check all neighboring nodes to see if their distances need to be updated.
-       for neighbor in Graph.neighbors(current):
-           // Calculate the tentative distance to the neighbor through the current node.
-           tentative_distance = distances[current] + Graph.distance(current, neighbor)
-
-           // If the tentative distance is smaller than the current distance to the neighbor, update the distance.
-           if tentative_distance < distances[neighbor]:
-               distances[neighbor] = tentative_distance
-
-               // Enqueue the neighbor with its new distance to be considered for visitation in the future.
-               queue.enqueue(neighbor, distances[neighbor])
-
-   // Return the calculated distances from the source to all other nodes in the graph.
-   return distances
+```cpp
+template<class VertDataTy, class WeightTy, WeightTy INF>
+void dijkstra(const Graph_AM<VertDataTy, WeightTy, INF>& graph, index srcVertIndex, std::vector<index>& prev, std::vector<WeightTy>& dists)
+{
+    WeightTy curMinDist{};
+    std::vector<bool> visited(graph._vertVec.size(), false);
+    sizet vertNum = graph.get_vertNum();
+    prev.resize(vertNum, {});
+    dists.resize(vertNum, {});
+    // Initialize the distance vector and the previous node vector.
+    for (index vIndex = 0; vIndex < vertNum; ++vIndex) {
+        dists[v] = graph.get_weight_loc(srcVertIndex, vIndex);
+        if (dists[v] == INF) {
+            prev[v] = -1;
+        } else {
+            prev[v] = srcVertIndex;
+        }
+    }
+    // Mark the source node as visited.
+    visited[srcVertIndex] = true;
+    // Loop until all nodes have been visited.
+    for (sizet i = 0; i < vertNum - 1; ++i) {
+        curMinDist = INF;
+        index curMinDistVertIndex = -1;
+        // Get the node with current smallest distance by Linear Search.
+        for (index vIndex = 0; vIndex < vertNum; ++vIndex) {
+            // Only check the nodes that have not been visited.
+            if (visited[vIndex] == false && dists[vIndex] < curMinDist) {
+                curMinDist = dists[vIndex];
+                curMinDistVertIndex = vIndex;
+            }
+        }
+        // If no node can be found, break the loop.
+        if (curMinDistVertIndex == -1) { continue; }
+        // Mark the found node as visited.
+        visited[curMinDistVertIndex] = true;
+        // Update the distance vector and the previous node vector.
+        for (index vIndex = 0; vIndex < vertNum; ++vIndex) {
+            // If the node has been visited or there is no edge between the two nodes, skip it.
+            if (visited[vIndex] == true || graph.get_weight_loc(curMinDistVertIndex, vIndex) == INF) { continue; }
+            WeightTy newDist = curMinDist + graph.get_weight_loc(curMinDistVertIndex, vIndex);
+            // If the new distance is smaller than the current distance, update the distance.
+            if (newDist < dists[vIndex]) {
+                dists[vIndex] = newDist;
+                prev[vIndex] = curMinDistVertIndex;
+            }
+        }
+    }
+}
 ```

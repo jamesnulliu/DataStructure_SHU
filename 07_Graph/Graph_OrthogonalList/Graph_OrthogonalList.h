@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <memory>
 
 namespace GOL {
     using Index = long long;
@@ -66,6 +67,9 @@ namespace GOL {
 
         // @brief Get a vector of indexes that vertex of each has one arc coming into src vertex.
         std::vector<Index> getInIndexes(Index srcVertIndex) const;
+
+        Size outdegree() const { return (Size)getOutIndexes().size(); }
+        Size indegree() const { return (Size)getInIndexes().size(); }
 
     private:
         struct VertTy
@@ -238,8 +242,7 @@ namespace GOL {
         Graph<VertDataTy, WeightTy, W_DEFAULT>::getArcByIndex(Index srcVertIndex, Index dstVertIndex)
     {
         return std::const_pointer_cast<ArcTy>(
-            static_cast<const Graph<VertDataTy, WeightTy, W_DEFAULT>&>(*this)
-            .getArcByIndex(srcVertIndex, dstVertIndex)
+            static_cast<const Graph<VertDataTy, WeightTy, W_DEFAULT>&>(*this).getArcByIndex(srcVertIndex, dstVertIndex)
         );
     }
 

@@ -168,6 +168,7 @@
     <ClInclude Include="07_Graph\MinimumSpanningTree\Kruskal.h" />
     <ClInclude Include="07_Graph\MinimumSpanningTree\Prim.h" />
     <ClInclude Include="07_Graph\ShortestPath\Dijkstra.h" />
+    <ClInclude Include="07_Graph\ShortestPath\FloydWarshall.h" />
     <ClInclude Include="SkipList_Hash\header\ArrayList.h" />
     <ClInclude Include="SkipList_Hash\header\Dictionary.h" />
     <ClInclude Include="SkipList_Hash\header\DIterator.h" />

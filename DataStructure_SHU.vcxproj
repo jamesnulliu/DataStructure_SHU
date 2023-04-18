@@ -151,7 +151,7 @@
     <ClInclude Include="06_Tree_Forest\Forest\Forest.h" />
     <ClInclude Include="06_Tree_Forest\Forest\Tree.h" />
     <ClInclude Include="06_Tree_Forest\Forest\Tree_binary.h" />
-    <ClInclude Include="06_Tree_Forest\LinkedBinaryTree\BInaryTree.h" />
+    <ClInclude Include="06_Tree_Forest\LinkedBinaryTree\BinaryTree.h" />
     <ClInclude Include="06_Tree_Forest\LinkedBinaryTree\BinaryTreeNode.h" />
     <ClInclude Include="06_Tree_Forest\LinkedBinaryTree\LinkedBinaryTree.h" />
     <ClInclude Include="06_Tree_Forest\PriorityQueue\maxHBLT.h" />
@@ -163,7 +163,6 @@
     <ClInclude Include="07_Graph\Graph_AM\Graph_AM.h" />
     <ClInclude Include="07_Graph\Graph_Common\Graph.h" />
     <ClInclude Include="07_Graph\Graph_Link\Graph_Link.h" />
-    <ClInclude Include="07_Graph\Graph_OrthogonalList\GOL_Arc.h" />
     <ClInclude Include="07_Graph\Graph_OrthogonalList\Graph_OrthogonalList.h" />
     <ClInclude Include="07_Graph\MinimumSpanningTree\Kruskal.h" />
     <ClInclude Include="07_Graph\MinimumSpanningTree\Prim.h" />

@@ -3,9 +3,8 @@
 #include <vector>
 #include <algorithm>
 #include <unordered_map>
-#include <unordered_set>
 
-/** Persudocode for prim algorithm (from GeeksforGeeks)
+/**
  * Step 1: Determine an arbitrary vertex as the starting vertex of the MST.
  * Step 2: Follow steps 3 to 5 till there are vertices that are not included in the MST (known as fringe vertex).
  * Step 3: Find edges connecting any tree vertex with the fringe vertices.
@@ -17,7 +16,7 @@
 using sizet = long long;
 using index = long long;
 
-template<class VertTy, class WeightTy>
+template<class VertDataTy, class WeightTy>
 struct PrimEdge
 {
     WeightTy weight;
@@ -25,8 +24,8 @@ struct PrimEdge
     index vertToI;
 };
 
-template<class VertTy, class WeightTy, WeightTy UNLINK>
-void MinSpanningTree_Prim(const Graph_AM<VertTy, WeightTy, UNLINK>& graph, index startI) {
+template<class VertDataTy, class WeightTy, WeightTy UNLINK>
+void MinSpanningTree_Prim(const Graph_AM<VertDataTy, WeightTy, UNLINK>& graph, index startI) {
     sizet vertNum_graph = graph.get_vertNum();
     std::vector<bool> vIndexMap(vertNum_graph, false);  // Map of whether a vert has been added to MST
     sizet vertNum_mst = 0;
@@ -37,7 +36,7 @@ void MinSpanningTree_Prim(const Graph_AM<VertTy, WeightTy, UNLINK>& graph, index
     ++vertNum_mst;
 
     while (vertNum_mst < vertNum_graph) {
-        PrimEdge<VertTy, WeightTy> minEdge{ UNLINK,{},{} };
+        PrimEdge<VertDataTy, WeightTy> minEdge{ UNLINK,{},{} };
 
         // Traverse {vIndexMap} with index iterator {vertFromI};
         // For every index that is marked as 'has been added to MST' (i.e., true in {vIndexMap}),

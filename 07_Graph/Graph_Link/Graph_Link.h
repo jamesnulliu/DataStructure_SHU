@@ -4,7 +4,7 @@
 #include <iostream>
 #include <queue>
 
-template<class VertTy = char, class WeightTy = int>
+template<class VertDataTy = char, class WeightTy = int>
 class Graph_Link
 {
 public:
@@ -22,7 +22,7 @@ public:
     * ...
     */
     struct Arc { index destVertIndex = {}; Arc* next = nullptr; WeightTy weight = 1; };
-    struct VertNode { bool is_exisit = true; VertTy vert = {}; Arc* firstArcPtr = nullptr; };
+    struct VertNode { bool is_exisit = true; VertDataTy vert = {}; Arc* firstArcPtr = nullptr; };
 private:
     sizet _capacity_vert;
     std::vector<VertNode> _vertTable;
@@ -33,7 +33,7 @@ public: // Constructor & Destructor -----
         _capacity_vert(vertNum_max),
         _vertTable(vertNum_max, VertNode()),
         _vertNum(0) {}
-    Graph_Link(std::initializer_list<VertTy> initList) :
+    Graph_Link(std::initializer_list<VertDataTy> initList) :
         Graph_Link(initList.size())
     {
         // Copy each vert from {initList} to {_vertTable}:
@@ -44,7 +44,7 @@ public: // Constructor & Destructor -----
     }
     ~Graph_Link() = default;
 public:
-    void insertVertex(const VertTy& v) {
+    void insertVertex(const VertDataTy& v) {
         if (full_vert()) { _vertTable.resize(_capacity_vert <<= 1); }
         if (availableLoc.empty()) {
             _vertTable[_vertNum].vert = v;
@@ -56,7 +56,7 @@ public:
         ++_vertNum;
     }
 
-    void insertArc(const VertTy& _Left, const VertTy& _Right, const WeightTy& weight = 1) {
+    void insertArc(const VertDataTy& _Left, const VertDataTy& _Right, const WeightTy& weight = 1) {
         index leftI = get_vertIndex(_Left), rightI = get_vertIndex(_Right);
         if (leftI == -1 || rightI == -1) {
             throw "[Failed] Vertex Not Found!";
@@ -66,11 +66,11 @@ public:
         _vertTable[leftI].firstArcPtr = ed;
     }
 
-    void insertEdge(const VertTy& va, const VertTy& vb, const WeightTy& weight = 1) {
+    void insertEdge(const VertDataTy& va, const VertDataTy& vb, const WeightTy& weight = 1) {
         insertArc(va, vb, weight);
         insertArc(vb, va, weight);
     }
-    void eraseVertex(const VertTy& v) {
+    void eraseVertex(const VertDataTy& v) {
         index vI = get_vertIndex(v); // The index of vertex to be erased.
         // If not found the vertex, throw exception:
         if (vI == -1) {
@@ -82,7 +82,7 @@ public:
             vArcPtr = get_vertRef(vI).firstArcPtr        // Get a new first arc linking to some vertex.
             ) {
             // Find the heading vertex linked by {vArcPtr}.
-            VertTy linkedV = get_vertRef(vArcPtr->destVertIndex).vert;
+            VertDataTy linkedV = get_vertRef(vArcPtr->destVertIndex).vert;
             // Erase the arc from {v} to {linkedV}, vice versa.
             eraseArc(v, linkedV);
             eraseArc(linkedV, v);
@@ -93,7 +93,7 @@ public:
         get_vertRef(vI).is_exist = false;
     }
 
-    void eraseArc(const VertTy& _Left, const VertTy& _Right) {
+    void eraseArc(const VertDataTy& _Left, const VertDataTy& _Right) {
         index leftI = get_vertIndex(_Left), rightI = get_vertIndex(_Right);
         if (leftI == -1 || rightI == -1) {
             throw "[Failed] Vertex Not Found!";
@@ -116,7 +116,7 @@ public:
         delete arc;
     }
 
-    void eraseEdge(const VertTy& va, const VertTy& vb) {
+    void eraseEdge(const VertDataTy& va, const VertDataTy& vb) {
         eraseArc(va, vb);
         eraseArc(vb, va);
     }
@@ -141,7 +141,7 @@ public:
 
 private: // Helper Func -----
     constexpr bool full_vert() const { return _vertNum == _capacity_vert; }
-    constexpr index get_vertIndex(const VertTy& v) const {
+    constexpr index get_vertIndex(const VertDataTy& v) const {
         for (index i = 0; i < _vertNum; ++i) {
             if (_vertTable[i].vert == v) return i;
         }

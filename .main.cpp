@@ -2,25 +2,22 @@
 
 int main()
 {
-    BTree<int, 3> tree;
+    BTree<int, 4> tree;
     tree.insert(10);
-    tree.insert(25);
     tree.insert(20);
-    tree.insert(35);
+    tree.insert(30);
     tree.insert(40);
-    tree.insert(55);
-    tree.insert(70);
     tree.insert(50);
     tree.insert(60);
-    tree.insert(30);
-    tree.insert(80);
-    tree.insert(82);
-    tree.insert(85);
-    tree.insert(95);
-    tree.insert(90);
+    tree.insert(45);
+    tree.insert(46);
+    tree.insert(55);
+    tree.insert(56);
     tree.printTree();
-
-    tree.erase(70);
+    tree.erase(55);
+    tree.printTree();
+    tree.erase(55);
+    tree.erase(40);
     tree.printTree();
 }
 

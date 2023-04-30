@@ -25,33 +25,36 @@ public:
 public:
     inline NodePtr search(const KeyTy& key);
     const_NodePtr  search(const KeyTy& key) const;
+public:
     inline void insert(const KeyTy& key);
-    void printTree() const;
+private:
+    void rec_insert(NodePtr tRoot, const KeyTy& key, NodePtr parent);
+public:
     friend class erase_fn;
     class erase_fn
     {
     public:
         erase_fn(BTree& btree) :_root(btree._root) {}
-
         inline void operator()(const KeyTy& key);
     private:
         void rec_erase(NodePtr curNode, const KeyTy& key, NodePtr parent);
-
         template<class _NodeIt>
         bool try_rotate(NodePtr parent, _NodeIt curNodeInParChildren);
-
         template<class _NodeIt>
         void merge(NodePtr parent, _NodeIt curNodeInParChildren);
-
     private:
         NodePtr& _root;
     };
     erase_fn erase{ *this };
+    void printTree() const;
 
 private:  // Utility Functions
+    // @brief Calculate ceil(x over 2).
+    static constexpr int64_t ceilOver2(int64_t x) { return (x & 1LL) ? (x >> 1) + 1 : (x >> 1); }
+    // @brief Find the node where key belongs (where it is or "should" be if inserted).
     inline NodePtr find_belonging(NodePtr tRoot, const KeyTy& key, NodePtr* parent = nullptr);
+    // @brief Find the node where key belongs (where it is or "should" be if inserted).
     const_NodePtr  find_belonging(const_NodePtr tRoot, const KeyTy& key, const_NodePtr* parent = nullptr) const;
-    void rec_insert(NodePtr tRoot, const KeyTy& key, NodePtr parent);
 
 private:
     NodePtr _root{ std::make_shared<Node>() };
@@ -94,13 +97,9 @@ typename BTree<KeyTy, m>::const_NodePtr
 BTree<KeyTy, m>::find_belonging(const_NodePtr tRoot, const KeyTy& key, const_NodePtr* parent) const
 {
     Index i = 0;
-
     while (i < (Size)tRoot->keys.size() && key > tRoot->keys[i]) { ++i; }
-
     if ((i < (Size)tRoot->keys.size() && tRoot->keys[i] == key) || tRoot->is_leaf()) return tRoot;
-
     if (parent != nullptr) { *parent = tRoot; }
-
     return find_belonging(tRoot->children[i], key, parent);
 }
 
@@ -119,18 +118,19 @@ void BTree<KeyTy, m>::rec_insert(NodePtr curNode, const KeyTy& key, NodePtr pare
     if (targetIter != curNode->keys.end() && *targetIter == key) return;
     // If {tRoof} is leaf, insert {key} to {curNode} :
     if (curNode->is_leaf()) {
-        targetIter = curNode->keys.insert(targetIter, key);
+        ////targetIter = curNode->keys.insert(targetIter, key);
+        curNode->keys.insert(targetIter, key);
     }
     // Or {curNode} is not leaf, go deeper to find appropriate position to insert:
     else {
         rec_insert(curNode->children.at(targetIter - curNode->keys.begin()), key, curNode);
     }
-
     // If overflows, split {tRoot->keys}
     if ((Size)curNode->keys.size() == m) {
-        Size d = (Size)ceil(m / 2.0) - 1;
+        Size d = ceilOver2(m) - 1;
+        // The key to move upward
         KeyTy midKey = curNode->keys[d];
-
+        // Create a new node
         NodePtr rightPart = std::make_shared<Node>();
         // Copy keys to {rightPart}
         rightPart->keys.assign(curNode->keys.begin() + d + 1, curNode->keys.end());
@@ -142,23 +142,23 @@ void BTree<KeyTy, m>::rec_insert(NodePtr curNode, const KeyTy& key, NodePtr pare
             curNode->children.resize(d + 1);
         }
 
-        if (parent == nullptr) {  // If The splited node is root
+        // If The splited node is root, create a new root
+        if (parent == nullptr) {
             NodePtr rootNew = std::make_shared<Node>();
             rootNew->keys.assign({ midKey });
             rootNew->children.assign({ curNode, rightPart });
             _root = rootNew;
-        } else {  // If the splited node is not root, use {parent}
+        }
+        // If the splited node is not root, use {parent}
+        else {
             // Find the appropriate position for {key} to insert
-            auto keyInsertPosition = std::ranges::lower_bound(parent->keys, key);
-
+            auto keyInPar = std::ranges::lower_bound(parent->keys, key);
             // Insert {key} to parent keys
-            keyInsertPosition = parent->keys.insert(keyInsertPosition, midKey);
-
+            keyInPar = parent->keys.insert(keyInPar, midKey);
             // Calculate the index of {key} in parent keys
-            Index keyIndex = keyInsertPosition - parent->keys.begin();
-
-            parent->children[keyIndex] = rightPart;
-            parent->children.insert(parent->children.begin() + keyIndex, curNode);
+            Index keyIndex = keyInPar - parent->keys.begin();
+            // Update parent's children
+            parent->children.insert(parent->children.begin() + keyIndex + 1, rightPart);
         }
     }
     return;
@@ -168,9 +168,6 @@ template<class KeyTy, long long m>
 void BTree<KeyTy, m>::erase_fn::operator()(const KeyTy& key)
 {
     rec_erase(_root, key, nullptr);
-    if (_root->keys.size() == 0) {
-        _root = _root->children.front();
-    }
 }
 
 template<class KeyTy, long long m>
@@ -191,21 +188,26 @@ void BTree<KeyTy, m>::erase_fn::rec_erase(NodePtr curNode, const KeyTy& key, Nod
             // Dive into left subtree to erase the swapped{key}
             rec_erase(leftSubtree, key, curNode);
         }
-        // If current node is leaf
+        // Or current node is leaf
         else {
+            // Erase the key directly, adjust each node from bottom to top later
             curNode->keys.erase(keyInCurKeys);
         }
     }
-    // Or not found, try go deeper
+    // Or not found {key}, try go deeper
     else {
         // Return if {key} doesn't exist
         if (curNode->is_leaf()) return;
         // Go to deeper recursion to find the key
         rec_erase(curNode->children.at(keyInCurKeys - curNode->keys.begin()), key, curNode);
     }
-    if (curNode == _root) { return; }
+    if (curNode == _root) {
+        // Root must have at least one node
+        if (_root->keys.size() == 0) { _root = _root->children.front(); }
+        return;
+    }
     // If the num of keys in {curNode} is less than min num, adjest the node
-    if ((Size)curNode->keys.size() < (Size)ceil(m / 2.0) - 1) {
+    if ((Size)curNode->keys.size() < ceilOver2(m) - 1) {
         auto curNodeInParChildren = std::ranges::find(parent->children, curNode);
         if (curNode->is_leaf() && try_rotate(parent, curNodeInParChildren) == true) { return; }
         merge(parent, curNodeInParChildren);
@@ -216,13 +218,11 @@ template<class KeyTy, long long m>
 template<class _NodeIt>
 bool BTree<KeyTy, m>::erase_fn::try_rotate(NodePtr parent, _NodeIt curNodeInParChildren)
 {
-    // If parent is nullptr, currnt node must be _root. Rotation is impossible.
+    // If parent is nullptr, current node must be _root. Rotation is impossible.
     if (parent == nullptr) return false;
 
     NodePtr& curNode = *curNodeInParChildren;
     Index curNodeIdxInParChildren = curNodeInParChildren - parent->children.begin();
-
-    if (!curNode->is_leaf()) { throw "[ERR] {curNode} must be leaf in this function."; }
 
     // Get left sibling and right sibling of curent node; nullptr if non-exist
     NodePtr leftSibling = curNodeInParChildren == parent->children.begin() ?
@@ -230,28 +230,27 @@ bool BTree<KeyTy, m>::erase_fn::try_rotate(NodePtr parent, _NodeIt curNodeInParC
     NodePtr rightSibling = curNodeInParChildren == parent->children.end() - 1 ?
         nullptr : *(curNodeInParChildren + 1);
 
-    if (leftSibling == nullptr && rightSibling == nullptr) { throw "[ERR] Impossible when {curNode} is not root."; }
-
     // If left sibling has enough keys:
-    if (leftSibling != nullptr && leftSibling->keys.size() >= (Size)ceil(m / 2.0)) {
+    if (leftSibling != nullptr && (Size)leftSibling->keys.size() >= ceilOver2(m)) {
         // Choose a key from left sibling
         KeyTy chosenKey = leftSibling->keys.back();
         // Erase the chosen key from left sibling
         leftSibling->keys.pop_back();
         // Move down a key from parent
-        curNode->keys.insert(curNode->keys.begin(), parent->keys[curNodeIdxInParChildren - 1]);
+        curNode->keys.insert(curNode->keys.begin(), parent->keys.at(curNodeIdxInParChildren - 1));
         // Move up the chosen key to parent
         parent->keys[curNodeIdxInParChildren - 1] = chosenKey;
         return true;
     }
     // Else if right sibling has enough keys:
-    else if (rightSibling != nullptr && rightSibling->keys.size() >= (Size)ceil(m / 2.0)) {
+    else if (rightSibling != nullptr && (Size)rightSibling->keys.size() >= ceilOver2(m)) {
         KeyTy chosenKey = rightSibling->keys.front();
         rightSibling->keys.erase(rightSibling->keys.begin());
-        curNode->keys.push_back(parent->keys[curNodeIdxInParChildren]);
+        curNode->keys.push_back(parent->keys.at(curNodeIdxInParChildren));
         parent->keys[curNodeIdxInParChildren] = chosenKey;
         return true;
     }
+
     return false;
 }
 
@@ -259,10 +258,6 @@ template<class KeyTy, long long m>
 template<class _NodeIt>
 void BTree<KeyTy, m>::erase_fn::merge(NodePtr parent, _NodeIt curNodeInParChildren)
 {
-    if (parent == nullptr) {
-        throw "What the fuck?";
-    }
-
     NodePtr& curNode = *curNodeInParChildren;
     Index curNodeIdxInParChildren = curNodeInParChildren - parent->children.begin();
 
@@ -279,8 +274,9 @@ void BTree<KeyTy, m>::erase_fn::merge(NodePtr parent, _NodeIt curNodeInParChildr
         // Insert the key from parent to {leftSibling}
         leftSibling->keys.push_back(*midKeyInPar);
         // Insert the keys of {curNode} to {leftSibling}
-        leftSibling->keys.insert(leftSibling->keys.end(), curNode->keys.begin(), curNode->keys.end());
-        leftSibling->children.insert(leftSibling->children.end(), curNode->children.begin(), curNode->children.end());
+        std::ranges::copy(curNode->keys, std::back_inserter(leftSibling->keys));
+        // Insert the children of {curNode} to {leftSibling}
+        std::ranges::copy(curNode->children, std::back_inserter(leftSibling->children));
         // Erase {midKeyInParent}
         parent->keys.erase(midKeyInPar);
         // Erase {curNodeInParChildren}
@@ -291,8 +287,8 @@ void BTree<KeyTy, m>::erase_fn::merge(NodePtr parent, _NodeIt curNodeInParChildr
         // Same as above
         auto midKeyInPar = parent->keys.begin() + curNodeIdxInParChildren;
         rightSibling->keys.insert(rightSibling->keys.begin(), *midKeyInPar);
-        rightSibling->keys.insert(rightSibling->keys.begin(), curNode->keys.begin(), curNode->keys.end());
-        rightSibling->children.insert(rightSibling->children.begin(), curNode->children.begin(), curNode->children.end());
+        std::ranges::copy(curNode->keys, rightSibling->keys.begin());
+        std::ranges::copy(curNode->children, rightSibling->children.begin());
         parent->keys.erase(midKeyInPar);
         parent->children.erase(curNodeInParChildren);
     } else {

@@ -118,7 +118,6 @@ void BTree<KeyTy, m>::rec_insert(NodePtr curNode, const KeyTy& key, NodePtr pare
     if (targetIter != curNode->keys.end() && *targetIter == key) return;
     // If {tRoof} is leaf, insert {key} to {curNode} :
     if (curNode->is_leaf()) {
-        ////targetIter = curNode->keys.insert(targetIter, key);
         curNode->keys.insert(targetIter, key);
     }
     // Or {curNode} is not leaf, go deeper to find appropriate position to insert:
@@ -127,7 +126,7 @@ void BTree<KeyTy, m>::rec_insert(NodePtr curNode, const KeyTy& key, NodePtr pare
     }
     // If overflows, split {tRoot->keys}
     if ((Size)curNode->keys.size() == m) {
-        Size d = ceilOver2(m) - 1;
+        constexpr Size d = ceilOver2(m) - 1;
         // The key to move upward
         KeyTy midKey = curNode->keys[d];
         // Create a new node
@@ -203,7 +202,7 @@ void BTree<KeyTy, m>::erase_fn::rec_erase(NodePtr curNode, const KeyTy& key, Nod
     }
     if (curNode == _root) {
         // Root must have at least one node
-        if (_root->keys.size() == 0) { _root = _root->children.front(); }
+        if (_root->keys.size() == 0 && _root->children.size() != 0) { _root = _root->children.front(); }
         return;
     }
     // If the num of keys in {curNode} is less than min num, adjest the node
@@ -303,6 +302,11 @@ void BTree<KeyTy, m>::printTree() const
     nodeQueue.push(_root);
     Size nodeNumThisLevel = _root->keys.size();
     Size nodeNumNextLevel = 0;
+
+    if (nodeNumNextLevel == 0) {
+        std::cout << "Empty Tree." << std::endl;
+        return;
+    }
 
     while (!nodeQueue.empty()) {
         NodePtr curNode = nodeQueue.front();

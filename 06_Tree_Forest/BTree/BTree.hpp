@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <queue>
+#include <ranges>
 #include "BTreeNode.hpp"
 
 /*
@@ -286,8 +287,10 @@ void BTree<KeyTy, m>::erase_fn::merge(NodePtr parent, _NodeIt curNodeInParChildr
         // Same as above
         auto midKeyInPar = parent->keys.begin() + curNodeIdxInParChildren;
         rightSibling->keys.insert(rightSibling->keys.begin(), *midKeyInPar);
-        std::ranges::copy(curNode->keys, rightSibling->keys.begin());
-        std::ranges::copy(curNode->children, rightSibling->children.begin());
+        std::ranges::copy(rightSibling->keys, std::back_inserter(curNode->keys));
+        std::swap(rightSibling->keys, curNode->keys);
+        std::ranges::copy(rightSibling->children, std::back_inserter(curNode->children));
+        std::swap(rightSibling->children, curNode->children);
         parent->keys.erase(midKeyInPar);
         parent->children.erase(curNodeInParChildren);
     } else {
@@ -303,7 +306,7 @@ void BTree<KeyTy, m>::printTree() const
     Size nodeNumThisLevel = _root->keys.size();
     Size nodeNumNextLevel = 0;
 
-    if (nodeNumNextLevel == 0) {
+    if (nodeNumThisLevel == 0) {
         std::cout << "Empty Tree." << std::endl;
         return;
     }
@@ -327,4 +330,6 @@ void BTree<KeyTy, m>::printTree() const
             nodeNumNextLevel = 0;
         }
     }
+
+    std::cout << std::endl;
 }
